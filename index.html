@@ -3,37 +3,63 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#0f172a" />
+<meta name="theme-color" content="#7c3aed" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <title>Plant Wizard</title>
 <style>
   :root {
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    color: #0f172a;
-    background: #f1f5f9;
-    --amber-bg: #fffbeb; --amber-bd: #fde68a; --amber-tx: #92400e;
-    --sky-bg: #f0f9ff; --sky-bd: #bae6fd; --sky-tx: #075985;
-    --slate-bg: #f8fafc; --slate-bd: #e2e8f0; --slate-tx: #475569;
+    color: #1e1b2e;
+    --cyan: #0891b2;
+    --cyan-soft: #ecfeff;
+    --cyan-line: #a5f3fc;
+    --cyan-ink: #0e7490;
+    --violet: #7c3aed;
+    --violet-soft: #f5f3ff;
+    --violet-line: #ddd6fe;
+    --violet-ink: #6d28d9;
+    --ink: #1e1b2e;
+    --muted: #6b687f;
+    --line: #eae7f5;
+    --card: #ffffff;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; padding: 0 0 48px; }
-  header { padding: 16px 16px 8px; max-width: 900px; margin: 0 auto; }
-  header h1 { font-size: 1.25rem; margin: 0; }
-  header p { margin: 2px 0 0; font-size: 0.8rem; color: #64748b; }
+  body {
+    margin: 0; padding: 0 0 48px;
+    background: linear-gradient(180deg, #eefcfd 0%, #f6f2ff 45%, #fbfaff 100%);
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(120deg, #06b6d4 0%, #6366f1 55%, #a855f7 100%);
+    color: #fff; padding: 26px 16px 22px;
+    border-radius: 0 0 26px 26px;
+    box-shadow: 0 8px 24px rgba(124, 58, 237, .25);
+  }
+  header .inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
+  header svg { flex: 0 0 auto; width: 40px; height: 40px; }
+  header h1 { font-size: 1.35rem; margin: 0; letter-spacing: .3px; }
+  header p { margin: 3px 0 0; font-size: 0.8rem; opacity: .85; }
   nav {
     position: sticky; top: 0; z-index: 10; display: flex; gap: 4px;
-    background: #f1f5f9; padding: 8px 16px; border-bottom: 1px solid #e2e8f0;
+    background: rgba(251, 250, 255, .88);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    padding: 10px 16px; border-bottom: 1px solid var(--line);
     justify-content: center;
   }
   nav button {
-    border: 0; background: transparent; padding: 8px 14px; border-radius: 10px;
-    font-size: 0.85rem; font-weight: 600; color: #475569; cursor: pointer;
+    border: 0; background: transparent; padding: 8px 18px; border-radius: 999px;
+    font-size: 0.85rem; font-weight: 600; color: var(--muted); cursor: pointer;
+    transition: all .15s ease;
   }
-  nav button.active { background: #0f172a; color: #fff; }
-  main { max-width: 900px; margin: 0 auto; padding: 12px 16px; }
+  nav button.active {
+    background: linear-gradient(120deg, #06b6d4, #8b5cf6);
+    color: #fff; box-shadow: 0 3px 10px rgba(139, 92, 246, .35);
+  }
+  main { max-width: 900px; margin: 0 auto; padding: 14px 16px; }
   .card {
-    background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
-    padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(15,23,42,.05);
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 14px; margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, .06);
   }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
   .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -41,64 +67,82 @@
   .chips { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
   .badge {
     display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem;
-    border: 1px solid #e2e8f0; border-radius: 999px; padding: 2px 9px; color: #475569;
-    background: #fff;
+    border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px;
+    color: var(--muted); background: var(--violet-soft);
   }
-  .badge.dark { background: #fef3c7; color: #92400e; border-color: #fde68a; }
-  .badge.ghost { background: #f1f5f9; color: #64748b; }
+  .badge.dark { background: var(--violet-soft); color: var(--violet-ink); border-color: var(--violet-line); }
+  .badge.ghost { background: #f6f4fc; color: var(--muted); }
   .banner {
-    border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; font-weight: 600;
-    margin: 10px 0; border: 1px solid;
+    border-radius: 12px; padding: 9px 12px; font-size: 0.85rem; font-weight: 600;
+    margin: 10px 0; border: 1px solid; border-left-width: 4px;
   }
-  .amber { background: var(--amber-bg); border-color: var(--amber-bd); color: var(--amber-tx); }
-  .sky   { background: var(--sky-bg);   border-color: var(--sky-bd);   color: var(--sky-tx); }
-  .slate { background: var(--slate-bg); border-color: var(--slate-bd); color: var(--slate-tx); }
-  .grey  { background: #f8fafc; border-color: #e2e8f0; color: #94a3b8; }
+  .due   { background: var(--violet-soft); border-color: var(--violet-line); border-left-color: var(--violet); color: var(--violet-ink); }
+  .wait  { background: var(--cyan-soft);   border-color: var(--cyan-line);   border-left-color: var(--cyan);   color: var(--cyan-ink); }
+  .pause { background: #f4f4f8; border-color: #e4e4ec; border-left-color: #a5a5ba; color: #55526b; }
+  .grey  { background: #f8f7fb; border-color: var(--line); border-left-color: #c9c6d8; color: #908ca6; }
   button.btn {
-    border: 0; background: #0f172a; color: #fff; padding: 7px 12px; font-size: 0.8rem;
-    border-radius: 9px; cursor: pointer; font-weight: 600;
+    border: 0; background: linear-gradient(120deg, #06b6d4, #8b5cf6); color: #fff;
+    padding: 8px 14px; font-size: 0.8rem; border-radius: 10px; cursor: pointer;
+    font-weight: 600; box-shadow: 0 2px 8px rgba(139, 92, 246, .3);
   }
-  button.btn.outline { background: #fff; color: #334155; border: 1px solid #cbd5e1; }
-  button.btn.mini { padding: 5px 10px; font-weight: 500; }
-  button.x { border: 0; background: transparent; color: #94a3b8; cursor: pointer; font-size: 0.8rem; padding: 4px; }
+  button.btn.outline {
+    background: #fff; color: var(--violet-ink); border: 1px solid var(--violet-line);
+    box-shadow: none;
+  }
+  button.btn.mini { padding: 5px 11px; font-weight: 500; }
+  button.x { border: 0; background: transparent; color: #b0adc0; cursor: pointer; font-size: 0.8rem; padding: 4px; }
   button.x:hover { color: #dc2626; background: #fef2f2; border-radius: 6px; }
   .name { font-weight: 700; font-size: 0.95rem; }
-  .small { font-size: 0.75rem; color: #64748b; }
-  .foot { border-top: 1px solid #f1f5f9; margin-top: 10px; padding-top: 8px; }
+  .small { font-size: 0.75rem; color: var(--muted); }
+  .foot { border-top: 1px solid var(--line); margin-top: 10px; padding-top: 8px; }
   select, input[type="text"] {
-    border: 1px solid #cbd5e1; border-radius: 9px; padding: 7px 8px; font-size: 0.85rem;
-    background: #fff; color: #0f172a; max-width: 100%;
+    border: 1px solid #d8d4e8; border-radius: 10px; padding: 7px 9px; font-size: 0.85rem;
+    background: #fff; color: var(--ink); max-width: 100%;
   }
-  input[type="checkbox"] { width: 16px; height: 16px; accent-color: #059669; }
-  .bar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: #e2e8f0; margin: 6px 0 4px; }
+  select:focus, input[type="text"]:focus { outline: 2px solid var(--cyan-line); outline-offset: 0; border-color: var(--cyan); }
+  input[type="checkbox"] { width: 16px; height: 16px; accent-color: #8b5cf6; }
+  .bar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: #eeeaf8; margin: 6px 0 4px; }
   .legend { display: flex; flex-wrap: wrap; gap: 2px 10px; }
-  .legend span { font-size: 0.68rem; color: #64748b; display: inline-flex; align-items: center; gap: 4px; }
+  .legend span { font-size: 0.68rem; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; }
   .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
   table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
-  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
-  th { color: #64748b; font-weight: 600; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #f4f2fa; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
   .stock-item { display: flex; gap: 10px; padding: 8px; border-radius: 10px; align-items: flex-start; }
-  .stock-item:hover { background: #f8fafc; }
-  .stock-item.owned .label { text-decoration: line-through; color: #94a3b8; }
+  .stock-item:hover { background: var(--violet-soft); }
+  .stock-item.owned .label { text-decoration: line-through; color: #b0adc0; }
   .label { font-weight: 600; font-size: 0.85rem; }
   .filters button {
-    border: 0; background: transparent; padding: 5px 12px; border-radius: 8px;
-    font-size: 0.75rem; font-weight: 600; color: #475569; cursor: pointer;
+    border: 0; background: transparent; padding: 5px 13px; border-radius: 999px;
+    font-size: 0.75rem; font-weight: 600; color: var(--muted); cursor: pointer;
   }
-  .filters button.active { background: #0f172a; color: #fff; }
+  .filters button.active {
+    background: linear-gradient(120deg, #06b6d4, #8b5cf6); color: #fff;
+  }
   .addform { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  @media (max-width: 600px) { nav button { padding: 8px 10px; font-size: 0.78rem; } }
+  @media (max-width: 600px) {
+    nav button { padding: 8px 11px; font-size: 0.78rem; }
+    header .inner { justify-content: center; text-align: center; flex-direction: column; gap: 6px; }
+  }
 </style>
 </head>
 <body>
 <header>
-  <h1>🪴 Plant Wizard</h1>
-  <p>Soil mixes &amp; fertilizer, by observation</p>
+  <div class="inner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 22c0-6 2-13 9-16-.5 9-4 14-9 16z" fill="rgba(255,255,255,.18)"/>
+      <path d="M12 22c0-5-1.5-10-6-13 .5 7 3 10.5 6 13z" fill="rgba(255,255,255,.10)"/>
+    </svg>
+    <div>
+      <h1>Plant Wizard</h1>
+      <p>Soil mixes &amp; fertilizer, by observation</p>
+    </div>
+  </div>
 </header>
 <nav>
-  <button data-tab="plantes" class="active">💧 My plants</button>
-  <button data-tab="melanges">🧱 Mixes</button>
-  <button data-tab="stock">🛒 Stock</button>
+  <button data-tab="plantes" class="active">My plants</button>
+  <button data-tab="melanges">Mixes</button>
+  <button data-tab="stock">Stock</button>
 </nav>
 <main id="view"></main>
 
@@ -113,88 +157,83 @@
     "Compost": "#4E342E", "Ericaceous soil": "#556B2F", "Garden soil": "#7A5C3E"
   };
 
-  function G(id, name, icon, zone, mix, fertEvery, note, plants) {
-    return { id: id, name: name, icon: icon, zone: zone, mix: mix, fertEvery: fertEvery, note: note, plants: plants };
+  function G(id, name, zone, mix, fertEvery, note, plants) {
+    return { id: id, name: name, zone: zone, mix: mix, fertEvery: fertEvery, note: note, plants: plants };
   }
   function M(label, pct) { return { label: label, pct: pct }; }
 
   var GROUPS = [
-    G("tropicals", "Tropicals & aroids", "🌿", "Indoor",
+    G("tropicals", "Tropicals & aroids", "Indoor",
       [M("Potting soil", 40), M("Bark", 25), M("Pumice", 20), M("Coco", 15)], 2,
       "Let the top centimetre dry out between waterings.",
       ["Pothos", "Monstera", "Aglaonema", "Ficus", "ZZ", "Philodendron", "Syngonium"]),
-    G("anthurium", "Anthuriums", "🌺", "Indoor",
+    G("anthurium", "Anthuriums", "Indoor",
       [M("Potting soil", 30), M("Bark", 35), M("Coco", 20), M("Pumice", 15)], 2,
       "Thick roots: never leave water sitting in the saucer. The airiest mix of them all. A flowering fertilizer helps push blooms.",
       ["Anthurium"]),
-    G("semi-succulents", "Semi-succulents", "🌾", "Indoor",
+    G("semi-succulents", "Semi-succulents", "Indoor",
       [M("Potting soil", 55), M("Pumice", 30), M("Crushed bark", 15)], 3,
       "Should dry out in 2–3 days. Stems turning black at the base means too wet.",
       ["Tradescantia", "Kalanchoe", "Gasteraloe"]),
-    G("cacti", "Succulents & cacti", "🌵", "Indoor",
+    G("cacti", "Succulents & cacti", "Indoor",
       [M("Potting soil", 35), M("Pumice", 45), M("Sand", 20)], 4,
       "Let it dry fully between waterings. Fertilize rarely, at half dose.",
       ["Cactus", "Echeveria", "Haworthia", "Crassula"]),
-    G("epiphytes", "Forest epiphytes", "🎄", "Indoor",
+    G("epiphytes", "Forest epiphytes", "Indoor",
       [M("Potting soil", 50), M("Bark", 25), M("Pumice", 25)], 3,
       "Rich yet very free-draining. Never bone dry.",
       ["Christmas cactus", "Rhipsalis"]),
-    G("fine-roots", "Fine-rooted plants", "🍃", "Indoor",
+    G("fine-roots", "Fine-rooted plants", "Indoor",
       [M("Potting soil", 70), M("Pumice", 20), M("Coco", 10)], 2,
       "Everything crushed, for small pots.",
       ["Oxalis", "Begonia", "Peperomia", "Fittonia"]),
-    G("bulbs", "Bulbs & tubers", "🌷", "Indoor",
+    G("bulbs", "Bulbs & tubers", "Indoor",
       [M("Potting soil", 60), M("Compost", 20), M("Pumice", 20)], 2,
       "Calla lilies never want to dry out in the growing season. Amaryllis: high-potash feed after bloom to refill the bulb.",
       ["Amaryllis", "Zantedeschia (calla)", "Cyperus"]),
-    G("ferns", "Ferns", "🌱", "Indoor",
+    G("ferns", "Ferns", "Indoor",
       [M("Potting soil", 60), M("Coco", 25), M("Pumice", 15)], 2,
       "Keep evenly moist, never soggy.",
       ["Boston fern", "Pteris"]),
-    G("orchids", "Orchids", "🌸", "Indoor",
+    G("orchids", "Orchids", "Indoor",
       [M("Bark", 90), M("Pumice", 10)], 3,
       "Soak the pot for 10 minutes, then drain. Balanced fertilizer at half dose on damp roots.",
       ["Phalaenopsis"]),
-    G("mediterranean", "Mediterranean (potted)", "☀️", "Outdoor",
+    G("mediterranean", "Mediterranean (potted)", "Outdoor",
       [M("Potting soil", 40), M("Pumice", 30), M("Sand", 20), M("Compost", 10)], 4,
       "Once established, water sparingly. Protect pots from frost — roots in pots get the cold first. Fermented teas from March to October.",
       ["Strawberry tree", "Olive", "Lavender", "Rosemary", "Pomegranate"]),
-    G("potted-flowers", "Flowering container plants", "🪴", "Outdoor",
+    G("potted-flowers", "Flowering container plants", "Outdoor",
       [M("Potting soil", 50), M("Garden soil", 25), M("Pumice", 25)], 1,
       "Petunias and surfinias: flowering fertilizer weekly in summer — the hungriest plants in the garden. Empty the saucer.",
       ["Geranium", "Surfinia", "Petunia", "Pelargonium"]),
-    G("rockery", "Rockery succulents", "🪨", "Outdoor",
+    G("rockery", "Rockery succulents", "Outdoor",
       [M("Potting soil", 25), M("Pumice", 75)], null,
       "Water only at planting and in heatwaves. Mineral mulch on top, zero fertilizer.",
       ["Sedum", "Sempervivum", "Delosperma"]),
-    G("acid-lovers", "Acid-loving plants", "🫐", "Outdoor",
+    G("acid-lovers", "Acid-loving plants", "Outdoor",
       [M("Ericaceous soil", 60), M("Crushed bark", 20), M("Pumice", 20)], 3,
       "pH 4.5–5.5: no lime, ever. Rainwater only. Chelated iron when the leaves turn yellow (chlorosis).",
       ["Blueberry", "Camellia", "Hydrangea", "Azalea"]),
-    G("open-ground", "Open ground", "🌳", "Outdoor",
+    G("open-ground", "Open ground", "Outdoor",
       [M("Compost", 100)], null,
       "Mature compost at planting, nothing else. Hellebores like chalky, deep soil; if potted, a handful of slow-release granules each autumn.",
       ["Hellebore", "Mulberry", "Shrub", "Perennial"])
   ];
 
   var STOCK = [
-    { cat: "🧱 Substrates", items: [
-      { id: "potting-soil", label: "Quality all-purpose potting soil", note: "The base of every mix" },
-      { id: "bark", label: "Pine bark 10/25 mm", note: "Soak overnight before use; crush for small pots" },
+    { cat: "Substrates", items: [
+      { id: "potting-soil", label: "Quality all-purpose potting soil", note: "The base of every mix — light and airy, but low in nutrients" },
+      { id: "bark", label: "Pine bark 10/25 mm", note: "Soak overnight before use; crush for small pots. Doubles as surface mulch for Mediterranean pots" },
       { id: "coco", label: "Coco coir (bricks)", note: "Rehydrate before mixing" },
-      { id: "pumice", label: "Pumice 8/16 mm", note: "The one mineral that does it all — hammer-crush for small pots" },
+      { id: "pumice", label: "Pumice 8/16 mm", note: "The one mineral that does it all — hammer-crush for small pots; doubles as mineral mulch on rockeries" },
       { id: "ericaceous", label: "Ericaceous potting soil", note: "Acid-lovers only (blueberry, camellia, hydrangea…)" },
-      { id: "compost", label: "Mature compost", note: "Open ground + bulbs" }
+      { id: "compost", label: "Mature compost", note: "Richer than potting soil, feeds slowly — for open ground and bulbs" }
     ]},
-    { cat: "🧪 Fertilizers (a stack of 3)", items: [
+    { cat: "Fertilizers — a stack of 3", items: [
       { id: "fermented-teas", label: "Fermented nettle + horsetail + comfrey blend (5 L → 100 L)", note: "The everyday feed, indoors and out: nitrogen + potash + silica. Diluted to 5 %, every 2–3 weeks, March to October" },
       { id: "bloom-feed", label: "Liquid flowering fertilizer, high P-K (Algoflash 1 L or similar)", note: "Bloomers: anthurium, calla, begonia, oxalis, amaryllis after bloom; petunias and surfinias weekly in summer" },
       { id: "chelated-iron", label: "Chelated iron (Sequestrine-type) or ericaceous fertilizer", note: "For acid-lovers (blueberry) when leaves turn yellow" }
-    ]},
-    { cat: "🪵 Mulch & supplies", items: [
-      { id: "bark-mulch", label: "Pine bark (surface mulch)", note: "Strawberry trees, Mediterranean pots" },
-      { id: "pumice-mulch", label: "Pumice (mineral mulch)", note: "Rockery, pot surfaces" },
-      { id: "pots", label: "Drilled pots + saucers", note: "Empty the saucer after every watering" }
     ]}
   ];
 
@@ -293,7 +332,7 @@
     }).length;
 
     var h = '<div class="row" style="margin-bottom:10px">' +
-      '<span class="badge dark">🧪 Fertilizer due: ' + dueCount + "</span>" +
+      '<span class="badge dark">Fertilizer due: ' + dueCount + "</span>" +
       '<span class="badge ghost">' + state.plants.length + " plant" + (state.plants.length > 1 ? "s" : "") + "</span>" +
       '<span class="filters" style="margin-left:auto">' +
       '<button data-filter="all" class="' + (filter === "all" ? "active" : "") + '">All</button>' +
@@ -302,7 +341,7 @@
       "</span></div>";
 
     if (!inSeason()) {
-      h += '<div class="banner sky" style="margin-bottom:12px">❄️ Winter fertilizer break: from November to February, water by observation and plain water only — feeding a resting plant does nothing and the salts just pile up in the soil.</div>';
+      h += '<div class="banner pause" style="margin-bottom:12px">Winter fertilizer break: from November to February, water by observation and plain water only — feeding a resting plant does nothing and the salts just pile up in the soil.</div>';
     }
 
     // Add form
@@ -311,7 +350,7 @@
       '<span class="label" style="font-size:0.85rem">Add:</span>' +
       '<select id="f-group">';
     GROUPS.forEach(function (g) {
-      h += '<option value="' + g.id + '"' + (g.id === addGroup ? " selected" : "") + ">" + g.icon + " " + esc(g.name) + "</option>";
+      h += '<option value="' + g.id + '"' + (g.id === addGroup ? " selected" : "") + ">" + esc(g.name) + "</option>";
     });
     h += '</select><select id="f-plant">';
     g0.plants.forEach(function (pn) {
@@ -325,22 +364,22 @@
       var p = r.p, g = r.g, fs = r.fs;
       var banner;
       if (fs.kind === "due") {
-        banner = '<div class="banner amber">🧪 Fertilizer with this watering</div>';
+        banner = '<div class="banner due">Fertilizer with this watering</div>';
       } else if (fs.kind === "waiting") {
-        banner = '<div class="banner slate">💧 Plain water — fertilizer in ' + fs.remaining + " watering" + (fs.remaining > 1 ? "s" : "") + "</div>";
+        banner = '<div class="banner wait">Plain water — fertilizer in ' + fs.remaining + " watering" + (fs.remaining > 1 ? "s" : "") + "</div>";
       } else if (fs.kind === "pause") {
-        banner = '<div class="banner sky">❄️ Plain water — winter fertilizer break (Nov.–Feb.)</div>';
+        banner = '<div class="banner pause">Plain water — winter fertilizer break (Nov.–Feb.)</div>';
       } else {
-        banner = '<div class="banner grey">🪨 No fertilizer, ever</div>';
+        banner = '<div class="banner grey">No fertilizer, ever</div>';
       }
 
       var btns = "";
       if (fs.kind === "due") {
         btns = '<div class="row">' +
           '<button class="btn mini outline" data-action="water" data-fert="0" data-id="' + p.id + '">Watered — plain</button>' +
-          '<button class="btn mini" data-action="water" data-fert="1" data-id="' + p.id + '">💧 Watered + fertilizer</button></div>';
+          '<button class="btn mini" data-action="water" data-fert="1" data-id="' + p.id + '">Watered + fertilizer</button></div>';
       } else if (fs.kind === "waiting" || fs.kind === "pause") {
-        btns = '<div class="row"><button class="btn mini" data-action="water" data-fert="0" data-id="' + p.id + '">💧 Watered — plain</button></div>';
+        btns = '<div class="row"><button class="btn mini" data-action="water" data-fert="0" data-id="' + p.id + '">Watered — plain</button></div>';
       }
 
       var foot = "";
@@ -354,8 +393,8 @@
 
       h += '<div class="card">' +
         '<div class="row between"><div><div class="name">' + esc(p.name) + "</div>" +
-        '<span class="badge" style="margin-top:4px">' + g.icon + " " + esc(g.name) + "</span></div>" +
-        '<button class="x" data-action="remove" data-id="' + p.id + '" title="Remove">✕</button></div>' +
+        '<span class="badge" style="margin-top:4px">' + esc(g.name) + "</span></div>" +
+        '<button class="x" data-action="remove" data-id="' + p.id + '" title="Remove">×</button></div>' +
         banner + btns + foot + "</div>";
     });
     h += "</div>";
@@ -370,15 +409,15 @@
 
     GROUPS.forEach(function (g) {
       if (filter !== "all" && g.zone !== filter) return;
-      h += '<div class="card"><div class="row between"><strong>' + g.icon + " " + esc(g.name) + "</strong>" +
+      h += '<div class="card"><div class="row between"><strong>' + esc(g.name) + "</strong>" +
         '<span class="badge ghost">' + g.zone + "</span></div>" +
         mixBar(g.mix) +
-        '<div class="small" style="margin:8px 0">🧪 ' +
+        '<div class="small" style="margin:8px 0">' +
         (g.fertEvery === null
           ? "No fertilizer"
           : "Fertilizer every " + (g.fertEvery === 1 ? "watering" : g.fertEvery + " waterings") + " (Mar.–Oct.)") +
         "</div>" +
-        (g.note ? '<div class="small" style="color:#64748b">' + esc(g.note) + "</div>" : "") +
+        (g.note ? '<div class="small" style="color:var(--muted)">' + esc(g.note) + "</div>" : "") +
         '<div class="chips" style="margin-top:8px">';
       g.plants.forEach(function (pn) { h += '<span class="badge ghost">' + esc(pn) + "</span>"; });
       h += "</div></div>";
