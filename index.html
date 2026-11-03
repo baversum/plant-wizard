@@ -154,7 +154,7 @@
   var MIX_COLORS = {
     "Potting soil": "#8B5E3C", "Bark": "#A16207", "Crushed bark": "#A16207",
     "Pumice": "#D2691E", "Coco": "#E3B23C", "Sand": "#D6BD8A",
-    "Compost": "#4E342E", "Ericaceous soil": "#556B2F", "Garden soil": "#7A5C3E"
+    "Ericaceous soil": "#556B2F", "Garden soil": "#7A5C3E"
   };
 
   function G(id, name, zone, mix, fertEvery, note, plants) {
@@ -188,8 +188,8 @@
       "Everything crushed, for small pots.",
       ["Oxalis", "Begonia", "Peperomia", "Fittonia"]),
     G("bulbs", "Bulbs & tubers", "Indoor",
-      [M("Potting soil", 60), M("Compost", 20), M("Pumice", 20)], 2,
-      "Calla lilies never want to dry out in the growing season. Amaryllis: high-potash feed after bloom to refill the bulb.",
+      [M("Potting soil", 80), M("Pumice", 20)], 2,
+      "Calla lilies never want to dry out in the growing season. Amaryllis: high-potash feed after bloom to refill the bulb — the mix stays lean, fertility comes from the liquid feeds.",
       ["Amaryllis", "Zantedeschia (calla)", "Cyperus"]),
     G("ferns", "Ferns", "Indoor",
       [M("Potting soil", 60), M("Coco", 25), M("Pumice", 15)], 2,
@@ -200,7 +200,7 @@
       "Soak the pot for 10 minutes, then drain. Balanced fertilizer at half dose on damp roots.",
       ["Phalaenopsis"]),
     G("mediterranean", "Mediterranean (potted)", "Outdoor",
-      [M("Potting soil", 40), M("Pumice", 30), M("Sand", 20), M("Compost", 10)], 4,
+      [M("Potting soil", 50), M("Pumice", 30), M("Sand", 20)], 4,
       "Once established, water sparingly. Protect pots from frost — roots in pots get the cold first. Fermented teas from March to October.",
       ["Strawberry tree", "Olive", "Lavender", "Rosemary", "Pomegranate"]),
     G("potted-flowers", "Flowering container plants", "Outdoor",
@@ -216,8 +216,8 @@
       "pH 4.5–5.5: no lime, ever. Rainwater only. Chelated iron when the leaves turn yellow (chlorosis).",
       ["Blueberry", "Camellia", "Hydrangea", "Azalea"]),
     G("open-ground", "Open ground", "Outdoor",
-      [M("Compost", 100)], null,
-      "Mature compost at planting, nothing else. Hellebores like chalky, deep soil; if potted, a handful of slow-release granules each autumn.",
+      [M("Garden soil", 100)], null,
+      "Plant straight into the existing garden soil — no amendments in the planting hole, no fertilizer routine: the soil does all the work. Hellebores like chalky, deep soil; if potted, a handful of slow-release granules each autumn.",
       ["Hellebore", "Mulberry", "Shrub", "Perennial"])
   ];
 
@@ -227,8 +227,7 @@
       { id: "bark", label: "Pine bark 10/25 mm", note: "Soak overnight before use; crush for small pots. Doubles as surface mulch for Mediterranean pots" },
       { id: "coco", label: "Coco coir (bricks)", note: "Rehydrate before mixing" },
       { id: "pumice", label: "Pumice 8/16 mm", note: "The one mineral that does it all — hammer-crush for small pots; doubles as mineral mulch on rockeries" },
-      { id: "ericaceous", label: "Ericaceous potting soil", note: "Acid-lovers only (blueberry, camellia, hydrangea…)" },
-      { id: "compost", label: "Mature compost", note: "Richer than potting soil, feeds slowly — for open ground and bulbs" }
+      { id: "ericaceous", label: "Ericaceous potting soil", note: "Acid-lovers only (blueberry, camellia, hydrangea…)" }
     ]},
     { cat: "Fertilizers — a stack of 3", items: [
       { id: "fermented-teas", label: "Fermented nettle + horsetail + comfrey blend (5 L → 100 L)", note: "The everyday feed, indoors and out: nitrogen + potash + silica. Diluted to 5 %, every 2–3 weeks, March to October" },
@@ -538,3 +537,4 @@
 </script>
 </body>
 </html>
+
