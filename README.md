@@ -4,6 +4,8 @@ A small, dependency-free web app for plant care: what soil mix each plant group 
 
 No account, no server, no tracking. Everything lives in your browser's localStorage, so each device keeps its own counters.
 
+**Try it live: https://baversum.github.io/plant-wizard/**
+
 ## Why watering by observation
 
 Watering calendars don't work. Pots dry at their own pace depending on the season, the weather, and the pot size — and a fixed schedule is a reliable way to drown a plant in October or underwater it in July. Plant Wizard takes the opposite approach: you water when the soil tells you to (dry at 2 cm depth, or a light pot). What the app adds is the answer to the question you're asking yourself at that exact moment: *should this watering carry fertilizer, or would that be pointless — or even harmful?*
