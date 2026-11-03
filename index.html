@@ -184,7 +184,7 @@
       addLabel: "Add:", customName: "Custom name (optional)", addBtn: "Add",
       bannerDue: "Fertilizer with this watering",
       bannerWaitPre: "Plain water — fertilizer in", bannerWaitSg: "watering", bannerWaitPl: "waterings",
-      bannerPause: "Plain water — winter fertilizer break (Nov.–Feb.)",
+      bannerPause: "Plain water — out of the feeding season",
       bannerWinterDue: "Fertilizer with this watering — half dose (it grows all winter)",
       footWinter: "Winter grower: light feed while it buds and blooms, by observation.",
       fertSeasonAll: "(all year — half dose in winter)",
@@ -204,7 +204,7 @@
         "Pots under 15 cm: crush bark and pumice.",
         "Bark: soak overnight before use. Minerals: rinse off the dust.",
         "Rule of thumb: an indoor mix should dry out in 2–3 days.",
-        "Fertilizer only during the growing season (March – October), never on bone-dry soil. Winter growers like hellebores are the exception: light half-dose while they bud and bloom."
+        "Fertilizer only during the growing season (spring to early autumn), never on bone-dry soil. Winter growers like hellebores are the exception: light half-dose while they bud and bloom."
       ],
       ownedMid: "/", ownedEnd: "products owned",
       substTitle: "Substitutions: equivalents & dosages",
@@ -221,7 +221,7 @@
       addLabel: "Ajouter :", customName: "Nom perso (optionnel)", addBtn: "Ajouter",
       bannerDue: "Engrais avec cet arrosage",
       bannerWaitPre: "Eau claire — engrais dans", bannerWaitSg: "arrosage", bannerWaitPl: "arrosages",
-      bannerPause: "Eau claire — pause engrais d'hiver (nov.–févr.)",
+      bannerPause: "Eau claire — hors saison d'engrais",
       bannerWinterDue: "Engrais avec cet arrosage — demi-dose (elle pousse tout l'hiver)",
       footWinter: "Plante d'hiver : apport léger tant qu'elle boutonne et fleurit, à l'observation.",
       fertSeasonAll: "(toute l'année — demi-dose l'hiver)",
@@ -241,7 +241,7 @@
         "Pots de moins de 15 cm : concasser écorces et pouzzolane.",
         "Écorces : tremper la veille. Minéraux : rincer la poussière.",
         "Repère : un mélange d'intérieur doit sécher en 2–3 jours.",
-        "Engrais uniquement en saison de croissance (mars–octobre), jamais sur une terre complètement sèche. Exception : les plantes d'hiver comme les hellébores, apport léger à demi-dose tant qu'elles boutonnent et fleurissent."
+        "Engrais uniquement en saison de croissance (du printemps au début de l'automne), jamais sur une terre complètement sèche. Exception : les plantes d'hiver comme les hellébores, apport léger à demi-dose tant qu'elles boutonnent et fleurissent."
       ],
       ownedMid: "/", ownedEnd: "produits en stock",
       substTitle: "Substitutions : équivalents & dosages",
@@ -253,6 +253,15 @@
 
   var ZONE_FR = { "Indoor": "Intérieur", "Outdoor": "Extérieur" };
   function zone(z) { return lang === "fr" ? (ZONE_FR[z] || z) : z; }
+
+  var MONTHS = {
+    en: ["Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."],
+    fr: ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."]
+  };
+  function seasonLabel(g) {
+    var arr = MONTHS[lang];
+    return "(" + arr[2] + "–" + arr[(g.seasonEnd || 10) - 1] + ")";
+  }
 
   var MIX_FR = {
     "Potting soil": "Terreau", "Bark": "Écorces", "Crushed bark": "Écorces concassées",
@@ -280,19 +289,19 @@
     },
     notes: {
       tropicals: "Laisser sécher le premier centimètre entre deux arrosages.",
-      anthurium: "Racines épaisses : jamais d'eau stagnante dans la soucoupe. Le mélange le plus aéré de tous. Un engrais fleuri aide la floraison.",
-      "semi-succulents": "Doit sécher en 2–3 jours. Tige qui noircit à la base = trop d'eau.",
-      cacti: "Laisser sécher complètement entre deux arrosages. Engrais rare, à demi-dose.",
+      anthurium: "Racines épaisses : jamais d'eau stagnante dans la soucoupe. Le mélange le plus aéré de tous. Un engrais fleuri aide la floraison. Dans un intérieur chaud et lumineux, il peut fleurir toute l'année — s'il sort une hampe en hiver, un apport léger à demi-dose ne fait pas de mal.",
+      "semi-succulents": "Doit sécher en 2–3 jours. Tige qui noircit à la base = trop d'eau. Le kalanchoé fleurit en hiver grâce aux jours courts — pas besoin d'engrais pendant sa floraison.",
+      cacti: "Laisser sécher complètement entre deux arrosages. Engrais rare, à demi-dose, du printemps au début de l'automne pour que la croissance durcisse avant l'hiver.",
       epiphytes: "Riche mais très drainant. Jamais complètement sec.",
-      "fine-roots": "Tout concassé, pour les petits pots.",
-      bulbs: "Le calla ne doit jamais sécher en saison. Amaryllis : engrais riche en potasse après floraison pour recharger le bulbe — le mélange reste pauvre, la fertilité vient des engrais liquides.",
+      "fine-roots": "Tout concassé, pour les petits pots. Oxalis : les variétés à feuillage pourpre poussent en automne-hiver et dorment en été — suivre les feuilles, apport léger tant qu'il en a.",
+      bulbs: "Le calla ne doit jamais sécher en saison. Amaryllis : la floraison hivernale vit sur les réserves du bulbe — l'engrais fait une pause pendant celle-ci, puis les apports riches en potasse de mars à septembre rechargent le bulbe. Calla blanc (aethiopica) : pousse automne-printemps ; hybrides colorés : en été — suivre les feuilles. Le mélange reste pauvre, la fertilité vient des engrais liquides.",
       ferns: "Toujours frais, jamais détrempé.",
       orchids: "Trempot 10 minutes puis égoutter. Engrais équilibré à demi-dose sur racines humides.",
-      mediterranean: "Une fois installés, arrosage sobre. Protéger les pots du gel — les racines en pot souffrent en premier. Purins de mars à octobre.",
+      mediterranean: "Une fois installés, arrosage sobre. Protéger les pots du gel — les racines en pot souffrent en premier. Purins de mars à août : nourrir en automne donne un bois tendre qui craint le gel.",
       "potted-flowers": "Pétunias et surfinias : engrais fleuri chaque semaine en été — les plus gourmandes du jardin. Vider la soucoupe.",
       hellebores: "Plante d'hiver : elle boutonne et fleurit de novembre à mars, donc elle garde un apport liquide léger (demi-dose) pendant que tout le reste se repose. Pot profond, mélange riche en humus, jamais à sec ; couper les vieilles feuilles à l'apparition des boutons.",
       rockery: "Arroser seulement à la plantation et lors des canicules. Paillage minéral en surface, zéro engrais.",
-      "acid-lovers": "pH 4,5–5,5 : jamais de calcaire. Eau de pluie uniquement. Fer chélaté si les feuilles jaunissent (chlorose)."
+      "acid-lovers": "pH 4,5–5,5 : jamais de calcaire. Eau de pluie uniquement. Fer chélaté si les feuilles jaunissent (chlorose). Camélia et azalée forment leurs boutons en été — ce sont les apports d'été qui alimentent la floraison d'hiver."
     }
   };
   function gname(g) { return lang === "fr" ? (GROUP_FR.names[g.id] || g.name) : g.name; }
@@ -333,8 +342,8 @@
     "Ericaceous soil": "#556B2F", "Garden soil": "#7A5C3E"
   };
 
-  function G(id, name, zone, mix, fertEvery, note, plants, winterFeed) {
-    return { id: id, name: name, zone: zone, mix: mix, fertEvery: fertEvery, note: note, plants: plants, winterFeed: !!winterFeed };
+  function G(id, name, zone, mix, fertEvery, note, plants, winterFeed, seasonEnd) {
+    return { id: id, name: name, zone: zone, mix: mix, fertEvery: fertEvery, note: note, plants: plants, winterFeed: !!winterFeed, seasonEnd: seasonEnd || 10 };
   }
   function M(label, pct) { return { label: label, pct: pct }; }
 
@@ -345,27 +354,27 @@
       ["Pothos", "Monstera", "Aglaonema", "Ficus", "ZZ", "Philodendron", "Syngonium"]),
     G("anthurium", "Anthuriums", "Indoor",
       [M("Potting soil", 30), M("Bark", 35), M("Coco", 20), M("Pumice", 15)], 2,
-      "Thick roots: never leave water sitting in the saucer. The airiest mix of them all. A flowering fertilizer helps push blooms.",
+      "Thick roots: never leave water sitting in the saucer. The airiest mix of them all. A flowering fertilizer helps push blooms. In a warm, bright spot it can bloom year-round — if it pushes a spike in winter, a light half-dose feed won't hurt.",
       ["Anthurium"]),
     G("semi-succulents", "Semi-succulents", "Indoor",
       [M("Potting soil", 55), M("Pumice", 30), M("Crushed bark", 15)], 3,
-      "Should dry out in 2–3 days. Stems turning black at the base means too wet.",
+      "Should dry out in 2–3 days. Stems turning black at the base means too wet. Kalanchoe blooms in winter thanks to short days — no feed needed while it blooms.",
       ["Tradescantia", "Kalanchoe", "Gasteraloe"]),
     G("cacti", "Succulents & cacti", "Indoor",
       [M("Potting soil", 35), M("Pumice", 45), M("Sand", 20)], 4,
-      "Let it dry fully between waterings. Fertilize rarely, at half dose.",
-      ["Cactus", "Echeveria", "Haworthia", "Crassula"]),
+      "Let it dry fully between waterings. Fertilize rarely, at half dose, spring to early autumn so growth hardens before winter.",
+      ["Cactus", "Echeveria", "Haworthia", "Crassula"], false, 9),
     G("epiphytes", "Forest epiphytes", "Indoor",
       [M("Potting soil", 50), M("Bark", 25), M("Pumice", 25)], 3,
       "Rich yet very free-draining. Never bone dry.",
       ["Christmas cactus", "Rhipsalis"]),
     G("fine-roots", "Fine-rooted plants", "Indoor",
       [M("Potting soil", 70), M("Pumice", 20), M("Coco", 10)], 2,
-      "Everything crushed, for small pots.",
+      "Everything crushed, for small pots. Oxalis: the purple-leaved kinds grow in autumn-winter and sleep in summer — follow the leaves, light feed while it's in leaf.",
       ["Oxalis", "Begonia", "Peperomia", "Fittonia"]),
     G("bulbs", "Bulbs & tubers", "Indoor",
       [M("Potting soil", 80), M("Pumice", 20)], 2,
-      "Calla lilies never want to dry out in the growing season. Amaryllis: high-potash feed after bloom to refill the bulb — the mix stays lean, fertility comes from the liquid feeds.",
+      "Calla lilies never want to dry out in the growing season. Amaryllis: the winter bloom runs on the bulb's reserves — feeding pauses during it; high-potash feeds from March to September then refill the bulb. White calla (aethiopica) grows autumn-spring, colored hybrids in summer — follow the leaves. The mix stays lean, fertility comes from the liquid feeds.",
       ["Amaryllis", "Zantedeschia (calla)", "Cyperus"]),
     G("ferns", "Ferns", "Indoor",
       [M("Potting soil", 60), M("Coco", 25), M("Pumice", 15)], 2,
@@ -377,8 +386,8 @@
       ["Phalaenopsis"]),
     G("mediterranean", "Mediterranean (potted)", "Outdoor",
       [M("Potting soil", 50), M("Pumice", 30), M("Sand", 20)], 4,
-      "Once established, water sparingly. Protect pots from frost — roots in pots get the cold first. Fermented teas from March to October.",
-      ["Strawberry tree", "Olive", "Lavender", "Rosemary", "Pomegranate"]),
+      "Once established, water sparingly. Protect pots from frost — roots in pots get the cold first. Fermented teas from March to August: autumn feeding makes soft growth that fears frost.",
+      ["Strawberry tree", "Olive", "Lavender", "Rosemary", "Pomegranate"], false, 8),
     G("potted-flowers", "Flowering container plants", "Outdoor",
       [M("Potting soil", 50), M("Garden soil", 25), M("Pumice", 25)], 1,
       "Petunias and surfinias: flowering fertilizer weekly in summer — the hungriest plants in the garden. Empty the saucer.",
@@ -393,7 +402,7 @@
       ["Sedum", "Sempervivum", "Delosperma"]),
     G("acid-lovers", "Acid-loving plants", "Outdoor",
       [M("Ericaceous soil", 60), M("Crushed bark", 20), M("Pumice", 20)], 3,
-      "pH 4.5–5.5: no lime, ever. Rainwater only. Chelated iron when the leaves turn yellow (chlorosis).",
+      "pH 4.5–5.5: no lime, ever. Rainwater only. Chelated iron when the leaves turn yellow (chlorosis). Camellias and azaleas set their buds in summer — the summer feeds are what fuel the winter bloom.",
       ["Blueberry", "Camellia", "Hydrangea", "Azalea"])
   ];
 
@@ -472,14 +481,14 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-  function inSeason() { var m = new Date().getMonth() + 1; return m >= 3 && m <= 10; }
+  function inSeason(g) { var m = new Date().getMonth() + 1; var end = (g && g.seasonEnd) || 10; return m >= 3 && m <= end; }
   function grp(id) {
     for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i].id === id) return GROUPS[i];
     return GROUPS[0];
   }
   function fertState(p, g) {
     if (g.fertEvery === null) return { kind: "never" };
-    if (!inSeason()) {
+    if (!inSeason(g)) {
       if (g.winterFeed) {
         return p.sinceFert >= g.fertEvery ? { kind: "wdue" } : { kind: "waiting", remaining: g.fertEvery - p.sinceFert };
       }
@@ -611,7 +620,7 @@
         '<div class="small" style="margin:8px 0">' +
         (g.fertEvery === null
           ? T.fertNever
-          : T.fertEveryPre + " " + (g.fertEvery === 1 ? T.fertEveryW : g.fertEvery + " " + T.fertEveryPl) + " " + (g.winterFeed ? T.fertSeasonAll : T.fertSeason)) +
+          : T.fertEveryPre + " " + (g.fertEvery === 1 ? T.fertEveryW : g.fertEvery + " " + T.fertEveryPl) + " " + (g.winterFeed ? T.fertSeasonAll : seasonLabel(g))) +
         "</div>" +
         (gnote(g) ? '<div class="small" style="color:var(--muted)">' + esc(gnote(g)) + "</div>" : "") +
         '<div class="chips" style="margin-top:8px">';
