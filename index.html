@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0f172a" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Plant Wizard 🪴</title>
+<style>
+  :root {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #0f172a;
+    background: #f1f5f9;
+    --amber-bg: #fffbeb; --amber-bd: #fde68a; --amber-tx: #92400e;
+    --sky-bg: #f0f9ff; --sky-bd: #bae6fd; --sky-tx: #075985;
+    --slate-bg: #f8fafc; --slate-bd: #e2e8f0; --slate-tx: #475569;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 0 0 48px; }
+  header { padding: 16px 16px 8px; max-width: 900px; margin: 0 auto; }
+  header h1 { font-size: 1.25rem; margin: 0; }
+  header p { margin: 2px 0 0; font-size: 0.8rem; color: #64748b; }
+  nav {
+    position: sticky; top: 0; z-index: 10; display: flex; gap: 4px;
+    background: #f1f5f9; padding: 8px 16px; border-bottom: 1px solid #e2e8f0;
+    justify-content: center;
+  }
+  nav button {
+    border: 0; background: transparent; padding: 8px 14px; border-radius: 10px;
+    font-size: 0.85rem; font-weight: 600; color: #475569; cursor: pointer;
+  }
+  nav button.active { background: #0f172a; color: #fff; }
+  main { max-width: 900px; margin: 0 auto; padding: 12px 16px; }
+  .card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+    padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(15,23,42,.05);
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+  .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .row.between { justify-content: space-between; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem;
+    border: 1px solid #e2e8f0; border-radius: 999px; padding: 2px 9px; color: #475569;
+    background: #fff;
+  }
+  .badge.dark { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+  .badge.ghost { background: #f1f5f9; color: #64748b; }
+  .banner {
+    border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; font-weight: 600;
+    margin: 10px 0; border: 1px solid;
+  }
+  .amber { background: var(--amber-bg); border-color: var(--amber-bd); color: var(--amber-tx); }
+  .sky   { background: var(--sky-bg);   border-color: var(--sky-bd);   color: var(--sky-tx); }
+  .slate { background: var(--slate-bg); border-color: var(--slate-bd); color: var(--slate-tx); }
+  .grey  { background: #f8fafc; border-color: #e2e8f0; color: #94a3b8; }
+  button.btn {
+    border: 0; background: #0f172a; color: #fff; padding: 7px 12px; font-size: 0.8rem;
+    border-radius: 9px; cursor: pointer; font-weight: 600;
+  }
+  button.btn.outline { background: #fff; color: #334155; border: 1px solid #cbd5e1; }
+  button.btn.mini { padding: 5px 10px; font-weight: 500; }
+  button.x { border: 0; background: transparent; color: #94a3b8; cursor: pointer; font-size: 0.8rem; padding: 4px; }
+  button.x:hover { color: #dc2626; background: #fef2f2; border-radius: 6px; }
+  .name { font-weight: 700; font-size: 0.95rem; }
+  .small { font-size: 0.75rem; color: #64748b; }
+  .foot { border-top: 1px solid #f1f5f9; margin-top: 10px; padding-top: 8px; }
+  select, input[type="text"] {
+    border: 1px solid #cbd5e1; border-radius: 9px; padding: 7px 8px; font-size: 0.85rem;
+    background: #fff; color: #0f172a; max-width: 100%;
+  }
+  input[type="checkbox"] { width: 16px; height: 16px; accent-color: #059669; }
+  .bar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: #e2e8f0; margin: 6px 0 4px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 2px 10px; }
+  .legend span { font-size: 0.68rem; color: #64748b; display: inline-flex; align-items: center; gap: 4px; }
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+  th { color: #64748b; font-weight: 600; }
+  .stock-item { display: flex; gap: 10px; padding: 8px; border-radius: 10px; align-items: flex-start; }
+  .stock-item:hover { background: #f8fafc; }
+  .stock-item.owned .label { text-decoration: line-through; color: #94a3b8; }
+  .label { font-weight: 600; font-size: 0.85rem; }
+  .filters button {
+    border: 0; background: transparent; padding: 5px 12px; border-radius: 8px;
+    font-size: 0.75rem; font-weight: 600; color: #475569; cursor: pointer;
+  }
+  .filters button.active { background: #0f172a; color: #fff; }
+  .addform { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  @media (max-width: 600px) { nav button { padding: 8px 10px; font-size: 0.78rem; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🪴 Jardin &amp; Substrats</h1>
+  <p>Mélanges &amp; engrais, à l'observation</p>
+</header>
+<nav>
+  <button data-tab="plantes" class="active">💧 Mes plantes</button>
+  <button data-tab="melanges">🧱 Mélanges</button>
+  <button data-tab="stock">🛒 Stock</button>
+</nav>
+<main id="view"></main>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Données ----------
+  var MIX_COLORS = {
+    "Terreau": "#8B5E3C", "Écorces": "#A16207", "Écorces concassées": "#A16207",
+    "Pouzzolane": "#D2691E", "Coco": "#E3B23C", "Sable": "#D6BD8A",
+    "Compost": "#4E342E", "Terre de bruyère": "#556B2F", "Terre de jardin": "#7A5C3E"
+  };
+
+  function G(id, name, icon, zone, mix, fertEvery, note, plants) {
+    return { id: id, name: name, icon: icon, zone: zone, mix: mix, fertEvery: fertEvery, note: note, plants: plants };
+  }
+  function M(label, pct) { return { label: label, pct: pct }; }
+
+  var GROUPS = [
+    G("tropicales", "Tropicales & aracées", "🌿", "Intérieur",
+      [M("Terreau", 40), M("Écorces", 25), M("Pouzzolane", 20), M("Coco", 15)], 2,
+      "Laisser sécher le premier centimètre entre deux arrosages.",
+      ["Pothos", "Monstera", "Aglaonéma", "Ficus", "ZZ", "Philodendron", "Syngonium"]),
+    G("anthurium", "Anthuriums", "🌺", "Intérieur",
+      [M("Terreau", 30), M("Écorces", 35), M("Coco", 20), M("Pouzzolane", 15)], 2,
+      "Racines épaisses : jamais d'eau stagnante en soucoupe. Mélange le plus aéré. Engrais fleuries pour la floraison.",
+      ["Anthurium"]),
+    G("semi-grasses", "Semi-grasses", "🌾", "Intérieur",
+      [M("Terreau", 55), M("Pouzzolane", 30), M("Écorces concassées", 15)], 3,
+      "Doit sécher en 2–3 jours. Tiges noircies à la base = trop humide.",
+      ["Tradescantia", "Kalanchoé", "Gasteraloe"]),
+    G("grasses", "Plantes grasses & cactus", "🌵", "Intérieur",
+      [M("Terreau", 35), M("Pouzzolane", 45), M("Sable", 20)], 4,
+      "Séchage total entre deux arrosages. Engrais rare, demi-dose.",
+      ["Cactus", "Echeveria", "Haworthia", "Crassula"]),
+    G("forestiers", "Épiphytes forestiers", "🎄", "Intérieur",
+      [M("Terreau", 50), M("Écorces", 25), M("Pouzzolane", 25)], 3,
+      "Riche mais très drainant. Jamais complètement sec.",
+      ["Cactus de Noël", "Rhipsalis"]),
+    G("fines", "Racines fines", "🍃", "Intérieur",
+      [M("Terreau", 70), M("Pouzzolane", 20), M("Coco", 10)], 2,
+      "Tout concassé pour les petits pots.",
+      ["Oxalis", "Bégonia", "Peperomia", "Fittonia"]),
+    G("bulbeuses", "Bulbeuses", "🌷", "Intérieur",
+      [M("Terreau", 60), M("Compost", 20), M("Pouzzolane", 20)], 2,
+      "Zantedeschia : ne pas laisser sécher en saison. Amaryllis : engrais fleuries riche en potasse après la floraison pour regonfler le bulbe.",
+      ["Amaryllis", "Zantedeschia", "Cyperus"]),
+    G("fougeres", "Fougères", "🌱", "Intérieur",
+      [M("Terreau", 60), M("Coco", 25), M("Pouzzolane", 15)], 2,
+      "Substrat toujours frais, jamais détrempé.",
+      ["Fougère de Boston", "Pteris"]),
+    G("orchidees", "Orchidées", "🌸", "Intérieur",
+      [M("Écorces", 90), M("Pouzzolane", 10)], 3,
+      "Tremper le pot 10 min puis égoutter. Engrais universel à demi-dose sur racines humides.",
+      ["Phalaenopsis"]),
+    G("medit", "Méditerranéennes (pot)", "☀️", "Extérieur",
+      [M("Terreau", 40), M("Pouzzolane", 30), M("Sable", 20), M("Compost", 10)], 4,
+      "Arrosage très espacé une fois installées. Pots protégés du gel (racines exposées). Purins de mars à octobre.",
+      ["Arbousier", "Olivier", "Lavande", "Romarin", "Grenadier"]),
+    G("potees", "Potées fleuries", "🪴", "Extérieur",
+      [M("Terreau", 50), M("Terre de jardin", 25), M("Pouzzolane", 25)], 1,
+      "Pétunias/surfinias : engrais fleuries hebdomadaire en été — ce sont les plus gourmandes. Soucoupe vidée.",
+      ["Géranium", "Surfinia", "Pétunia", "Pélargonium"]),
+    G("rocaille", "Rocaille & plantes grasses", "🪨", "Extérieur",
+      [M("Terreau", 25), M("Pouzzolane", 75)], null,
+      "Arrosage seulement à la plantation et en canicule. Paillage minéral en surface, zéro engrais.",
+      ["Sedum", "Sempervivum", "Delosperma"]),
+    G("acidophiles", "Acidophiles", "🫐", "Extérieur",
+      [M("Terre de bruyère", 60), M("Écorces concassées", 20), M("Pouzzolane", 20)], 3,
+      "pH 4,5–5,5 : zéro calcaire. Eau de pluie uniquement. Fer chélaté en cas de feuillage jauni (chlorose).",
+      ["Myrtillier", "Camélia", "Hortensia", "Azalée"]),
+    G("terre", "Pleine terre", "🌳", "Extérieur",
+      [M("Compost", 100)], null,
+      "Compost mûre à la plantation, rien d'autre. Hellébore : aime le calcaire, engrais granulaire à l'automne si en pot.",
+      ["Hellébore", "Murier", "Arbuste", "Vivace"])
+  ];
+
+  var STOCK = [
+    { cat: "🧱 Substrats", items: [
+      { id: "terreau", label: "Terreau universel de qualité", note: "Base de tous les mélanges" },
+      { id: "ecorces", label: "Écorces de pin 10/25 mm", note: "Tremper une nuit avant usage ; concasser pour petits pots" },
+      { id: "coco", label: "Fibre de coco (briques)", note: "Réhydrater avant mélange" },
+      { id: "pouzzolane", label: "Pouzzolane 8/16 mm", note: "Minéral unique — concasser au maillet pour petits pots" },
+      { id: "bruyere", label: "Terre de bruyère", note: "Acidophiles uniquement (myrtillier, hortensia…)" },
+      { id: "compost", label: "Compost mûre", note: "Pleine terre + bulbeuses" }
+    ]},
+    { cat: "🧪 Engrais (pile de 3)", items: [
+      { id: "eng-purins", label: "Cocktail de purins ortie + prêle + consoude (5 L → 100 L)", note: "La routine, partout (intérieur compris) : azote + potasse + silice. Dilué à 5 %, toutes les 2–3 semaines, mars–oct." },
+      { id: "eng-fleuries", label: "Engrais liquide plantes fleuries (Algoflash 1 L ou équivalent)", note: "Florifères : anthurium, zantedeschia, bégonia, oxalis, amaryllis après floraison ; pétunias/surfinias : hebdomadaire en été" },
+      { id: "eng-fer", label: "Fer chélaté (type Séquestrine) ou engrais spécial bruyère", note: "Acidophiles (myrtillier) en cas de chlorose" }
+    ]},
+    { cat: "🪵 Paillage & matériel", items: [
+      { id: "paill-ecorces", label: "Écorces de pin (paillage de surface)", note: "Arbousiers, méditerranéennes en pot" },
+      { id: "paill-pouzz", label: "Pouzzolane (paillage minéral)", note: "Rocaille, surface des pots" },
+      { id: "pots", label: "Pots percés + soucoupes", note: "Vider la soucoupe après chaque arrosage" }
+    ]}
+  ];
+
+  var SUBST = [
+    ["Pouzzolane", "Perlite", "Identique", "Plus légère, flotte : OK intérieur, éviter en extérieur"],
+    ["Pouzzolane", "Billes d'argile concassées", "Identique", "Rincer la poussière de concassage"],
+    ["Pouzzolane", "Billes d'argile entières 8/16", "Identique (grands pots)", "Aération moindre : +5 % de part si le mélange reste lourd"],
+    ["Pouzzolane", "Sable de filtration (0,4–0,8 mm)", "÷ 2 — ex. 30 % → 15 %", "Le sable densifie au lieu d'aérer. Max 20 % du mélange, compenser au terreau"],
+    ["Pouzzolane", "Gravier béton 4/8 (Bricomarché)", "Identique", "Souvent calcaire : interdit pour acidophiles"],
+    ["Écorces", "Pouzzolane concassée", "Identique", "Mélange un peu plus sec : arroser un peu plus souvent"],
+    ["Coco", "Tourbe blonde", "Identique", "Tourbe à réhydrater également"]
+  ];
+
+  // ---------- État ----------
+  var LS_KEY = "jardin-substrats-html-v1";
+  var SEED = [
+    ["Pothos", "tropicales"], ["Monstera", "tropicales"], ["Aglaonéma", "tropicales"],
+    ["Ficus", "tropicales"], ["ZZ", "tropicales"], ["Anthurium", "anthurium"],
+    ["Tradescantia", "semi-grasses"], ["Kalanchoé", "semi-grasses"],
+    ["Cactus de Noël", "forestiers"], ["Oxalis", "fines"], ["Bégonia", "fines"],
+    ["Amaryllis", "bulbeuses"], ["Zantedeschia", "bulbeuses"],
+    ["Arbousier 1", "medit"], ["Arbousier 2", "medit"],
+    ["Myrtillier", "acidophiles"], ["Géranium", "potees"]
+  ];
+
+  function seedPlants() {
+    return SEED.map(function (s) { return { id: uid(), name: s[0], groupId: s[1], sinceFert: 0 }; });
+  }
+  function uid() {
+    return "p-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 9);
+  }
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(LS_KEY);
+      if (raw) {
+        var p = JSON.parse(raw);
+        if (Array.isArray(p.plants)) {
+          return { plants: p.plants, owned: Array.isArray(p.owned) ? p.owned : [] };
+        }
+      }
+    } catch (e) { /* stockage indisponible */ }
+    return { plants: seedPlants(), owned: [] };
+  }
+  function save() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) { /* mémoire uniquement */ }
+  }
+
+  var state = loadState();
+  var tab = "plantes";
+  var filter = "all";
+  var addGroup = GROUPS[0].id;
+
+  // ---------- Utilitaires ----------
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function inSeason() { var m = new Date().getMonth() + 1; return m >= 3 && m <= 10; }
+  function grp(id) {
+    for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i].id === id) return GROUPS[i];
+    return GROUPS[0];
+  }
+  function fertState(p, g) {
+    if (g.fertEvery === null) return { kind: "never" };
+    if (!inSeason()) return { kind: "pause" };
+    if (p.sinceFert >= g.fertEvery) return { kind: "due" };
+    return { kind: "waiting", remaining: g.fertEvery - p.sinceFert };
+  }
+  function mixBar(mix) {
+    var h = '<div class="bar">';
+    mix.forEach(function (m) {
+      var c = MIX_COLORS[m.label] || "#94A3B8";
+      h += '<div style="width:' + m.pct + "%;background:" + c + '" title="' + esc(m.label) + " " + m.pct + ' %"></div>';
+    });
+    h += '</div><div class="legend">';
+    mix.forEach(function (m) {
+      var c = MIX_COLORS[m.label] || "#94A3B8";
+      h += "<span><i class=\"dot\" style=\"background:" + c + '"></i>' + esc(m.label) + " " + m.pct + " %</span>";
+    });
+    return h + "</div>";
+  }
+
+  // ---------- Rendu ----------
+  var view = document.getElementById("view");
+
+  function renderPlants() {
+    var rows = state.plants.map(function (p) {
+      var g = grp(p.groupId);
+      var fs = fertState(p, g);
+      var rank = fs.kind === "due" ? 0 : fs.kind === "waiting" ? fs.remaining : fs.kind === "pause" ? 500 : 900;
+      return { p: p, g: g, fs: fs, rank: rank };
+    });
+    if (filter !== "all") rows = rows.filter(function (r) { return r.g.zone === filter; });
+    rows.sort(function (a, b) { return a.rank - b.rank || a.p.name.localeCompare(b.p.name); });
+
+    var dueCount = state.plants.filter(function (p) {
+      return fertState(p, grp(p.groupId)).kind === "due";
+    }).length;
+
+    var h = '<div class="row" style="margin-bottom:10px">' +
+      '<span class="badge dark">🧪 Engrais conseillé : ' + dueCount + "</span>" +
+      '<span class="badge ghost">' + state.plants.length + " plante(s)</span>" +
+      '<span class="filters" style="margin-left:auto">' +
+      '<button data-filter="all" class="' + (filter === "all" ? "active" : "") + '">Toutes</button>' +
+      '<button data-filter="Intérieur" class="' + (filter === "Intérieur" ? "active" : "") + '">Intérieur</button>' +
+      '<button data-filter="Extérieur" class="' + (filter === "Extérieur" ? "active" : "") + '">Extérieur</button>' +
+      "</span></div>";
+
+    if (!inSeason()) {
+      h += '<div class="banner sky" style="margin-bottom:12px">❄️ Pause engrais d\'hiver : de novembre à février, arrosez à l\'observation, à l\'eau seule — l\'engrais ne servirait à rien et s\'accumulerait dans le substrat.</div>';
+    }
+
+    // Formulaire d'ajout
+    var g0 = grp(addGroup);
+    h += '<div class="card"><div class="addform">' +
+      '<span class="label" style="font-size:0.85rem">Ajouter :</span>' +
+      '<select id="f-group">';
+    GROUPS.forEach(function (g) {
+      h += '<option value="' + g.id + '"' + (g.id === addGroup ? " selected" : "") + ">" + g.icon + " " + esc(g.name) + "</option>";
+    });
+    h += '</select><select id="f-plant">';
+    g0.plants.forEach(function (pn, i) {
+      h += '<option value="' + esc(pn) + '">' + esc(pn) + "</option>";
+    });
+    h += '</select><input type="text" id="f-name" placeholder="Nom libre (optionnel)" style="width:170px" />' +
+      '<button class="btn mini" data-action="add">Ajouter</button></div></div>';
+
+    h += '<div class="grid">';
+    rows.forEach(function (r) {
+      var p = r.p, g = r.g, fs = r.fs;
+      var banner;
+      if (fs.kind === "due") {
+        banner = '<div class="banner amber">🧪 Engrais conseillé à cet arrosage</div>';
+      } else if (fs.kind === "waiting") {
+        banner = '<div class="banner slate">💧 Eau seule — engrais dans ' + fs.remaining + " arrosage" + (fs.remaining > 1 ? "s" : "") + "</div>";
+      } else if (fs.kind === "pause") {
+        banner = '<div class="banner sky">❄️ Eau seule — pause engrais d\'hiver (nov.–févr.)</div>';
+      } else {
+        banner = '<div class="banner grey">🪨 Aucun engrais, jamais</div>';
+      }
+
+      var btns = "";
+      if (fs.kind === "due") {
+        btns = '<div class="row">' +
+          '<button class="btn mini outline" data-action="water" data-fert="0" data-id="' + p.id + '">Arrosé — eau seule</button>' +
+          '<button class="btn mini" data-action="water" data-fert="1" data-id="' + p.id + '">💧 Arrosé + engrais</button></div>';
+      } else if (fs.kind === "waiting" || fs.kind === "pause") {
+        btns = '<div class="row"><button class="btn mini" data-action="water" data-fert="0" data-id="' + p.id + '">💧 Arrosé — eau seule</button></div>';
+      }
+
+      var foot = "";
+      if (fs.kind !== "never") {
+        foot = '<div class="foot small">' +
+          (fs.kind === "pause"
+            ? "L'engrais redevient utile à partir de mars."
+            : p.sinceFert + " arrosage(s) depuis le dernier engrais.") +
+          "</div>";
+      }
+
+      h += '<div class="card">' +
+        '<div class="row between"><div><div class="name">' + esc(p.name) + "</div>" +
+        '<span class="badge" style="margin-top:4px">' + g.icon + " " + esc(g.name) + "</span></div>" +
+        '<button class="x" data-action="remove" data-id="' + p.id + '" title="Retirer">✕</button></div>' +
+        banner + btns + foot + "</div>";
+    });
+    h += "</div>";
+    view.innerHTML = h;
+  }
+
+  function renderMixes() {
+    var h = '<div class="filters row" style="margin-bottom:10px">' +
+      '<button data-filter="all" class="' + (filter === "all" ? "active" : "") + '">Tous</button>' +
+      '<button data-filter="Intérieur" class="' + (filter === "Intérieur" ? "active" : "") + '">Intérieur</button>' +
+      '<button data-filter="Extérieur" class="' + (filter === "Extérieur" ? "active" : "") + '">Extérieur</button></div><div class="grid">';
+
+    GROUPS.forEach(function (g) {
+      if (filter !== "all" && g.zone !== filter) return;
+      h += '<div class="card"><div class="row between"><strong>' + g.icon + " " + esc(g.name) + "</strong>" +
+        '<span class="badge ghost">' + g.zone + "</span></div>" +
+        mixBar(g.mix) +
+        '<div class="small" style="margin:8px 0">🧪 ' +
+        (g.fertEvery === null ? "Aucun engrais" : "Engrais tous les " + g.fertEvery + " arrosages (mars–oct.)") +
+        "</div>" +
+        (g.note ? '<div class="small" style="color:#64748b">' + esc(g.note) + "</div>" : "") +
+        '<div class="chips" style="margin-top:8px">';
+      g.plants.forEach(function (pn) { h += '<span class="badge ghost">' + esc(pn) + "</span>"; });
+      h += "</div></div>";
+    });
+
+    h += '</div><div class="card"><strong>Règles générales</strong><div class="small" style="margin-top:6px">' +
+      "• Arrosage à l'observation : substrat sec au doigt à 2 cm (ou pot léger).<br>" +
+      "• Tout en mélange homogène : pas de couche de drainage au fond du pot (nappe perchée).<br>" +
+      "• Pot percé + soucoupe vidée après arrosage.<br>" +
+      "• Pots de moins de 15 cm : concasser écorces et pouzzolane.<br>" +
+      "• Écorces : tremper une nuit avant usage. Minéraux : rincer si poussiéreux.<br>" +
+      "• Repère : un mélange intérieur doit sécher en 2–3 jours.<br>" +
+      "• Engrais uniquement en saison de croissance (mars – octobre), jamais sur terreau sec.</div></div>";
+    view.innerHTML = h;
+  }
+
+  function renderStock() {
+    var total = 0;
+    STOCK.forEach(function (c) { total += c.items.length; });
+    var h = '<div class="row" style="margin-bottom:10px"><span class="badge ghost">' +
+      state.owned.length + " / " + total + " produits possédés</span></div>";
+
+    STOCK.forEach(function (cat) {
+      h += '<div class="card"><strong>' + esc(cat.cat) + "</strong>";
+      cat.items.forEach(function (it) {
+        var owned = state.owned.indexOf(it.id) >= 0;
+        h += '<label class="stock-item' + (owned ? " owned" : "") + '">' +
+          '<input type="checkbox" data-stock="' + it.id + '"' + (owned ? " checked" : "") + ' />' +
+          "<div><div class=\"label\">" + esc(it.label) + "</div>" +
+          '<div class="small">' + esc(it.note) + "</div></div></label>";
+      });
+      h += "</div>";
+    });
+
+    h += '<div class="card"><strong>Substitutions : équivalences &amp; dosages</strong><table style="margin-top:8px">' +
+      "<tr><th>Remplacer…</th><th>Par…</th><th>Dosage</th><th>Note</th></tr>";
+    SUBST.forEach(function (s) {
+      h += "<tr><td>" + esc(s[0]) + "</td><td><strong>" + esc(s[1]) + "</strong></td><td>" + esc(s[2]) + "</td><td>" + esc(s[3]) + "</td></tr>";
+    });
+    h += '</table><p class="small" style="margin-top:8px">Principe : les substitutions minérales à granulométrie équivalente se font à volume égal. Seuls le sable fin (÷ 2) et le calibre (à concasser pour petits pots) exigent de revoir le dosage.</p></div>';
+    view.innerHTML = h;
+  }
+
+  function render() {
+    document.querySelectorAll("nav button").forEach(function (b) {
+      b.classList.toggle("active", b.getAttribute("data-tab") === tab);
+    });
+    if (tab === "plantes") renderPlants();
+    else if (tab === "melanges") renderMixes();
+    else renderStock();
+  }
+
+  // ---------- Événements ----------
+  document.querySelectorAll("nav button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      tab = b.getAttribute("data-tab");
+      filter = "all";
+      render();
+    });
+  });
+
+  view.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-action],[data-filter]");
+    if (!el) return;
+
+    if (el.hasAttribute("data-filter")) {
+      filter = el.getAttribute("data-filter");
+      render();
+      return;
+    }
+    var action = el.getAttribute("data-action");
+    if (action === "water") {
+      var id = el.getAttribute("data-id");
+      var fert = el.getAttribute("data-fert") === "1";
+      state.plants.forEach(function (p) {
+        if (p.id === id) p.sinceFert = fert ? 0 : p.sinceFert + 1;
+      });
+      save(); render();
+    } else if (action === "remove") {
+      var rid = el.getAttribute("data-id");
+      state.plants = state.plants.filter(function (p) { return p.id !== rid; });
+      save(); render();
+    } else if (action === "add") {
+      var gsel = document.getElementById("f-group");
+      var psel = document.getElementById("f-plant");
+      var nameIn = document.getElementById("f-name");
+      var name = (nameIn.value || "").trim() || psel.value;
+      state.plants.push({ id: uid(), name: name, groupId: gsel.value, sinceFert: 0 });
+      if (nameIn) nameIn.value = "";
+      save(); render();
+    }
+  });
+
+  view.addEventListener("change", function (e) {
+    var el = e.target;
+    if (el.id === "f-group") {
+      addGroup = el.value;
+      var psel = document.getElementById("f-plant");
+      var g = grp(addGroup);
+      psel.innerHTML = g.plants.map(function (pn) {
+        return '<option value="' + esc(pn) + '">' + esc(pn) + "</option>";
+      }).join("");
+      return;
+    }
+    if (el.hasAttribute("data-stock")) {
+      var id = el.getAttribute("data-stock");
+      var idx = state.owned.indexOf(id);
+      if (el.checked && idx < 0) state.owned.push(id);
+      if (!el.checked && idx >= 0) state.owned.splice(idx, 1);
+      save();
+      var lab = el.closest(".stock-item");
+      if (lab) lab.classList.toggle("owned", el.checked);
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
