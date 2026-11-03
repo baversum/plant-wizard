@@ -230,7 +230,7 @@
       vqRemoveBtn: "Cleared", vqAdd: "Add", vqDelete: "Delete planter",
       vqPlantNow: "Plant now:", vqBulbs: "bulbs", vqPlantsW: "plants",
       vqUnderlayer: "Bulbs are the underlayer: plant them deep, cover plants on top.",
-      vqBloomNow: "In bloom now:",
+      vqBloomNow: "In bloom now:", vqFertLine: "Feed:",
       vqGapPre: "Bloom gaps ahead:", vqGapOk: "The plant-now picks above will cover them.",
       vqGapWarn: "Nothing plantable now covers them — think of",
       vqNothing: "Nothing to do this month — water, deadhead, enjoy.",
@@ -240,7 +240,7 @@
       vqResetSocle: "rotation is starting from scratch — remove it too if you want a clean slate",
       vqCalendar: "Planting calendar (all planters)",
       vqCalendarNote: "Windows for a French climate; summer bedding goes out only after the last frost (mid-May). Densities are a guide — bulbs are an underlayer beneath the cover plants.",
-      vqCalCols: ["Plant", "Plant in", "Blooms", "Density", "Exposure"],
+      vqCalCols: ["Plant", "Plant in", "Blooms", "Density", "Exposure", "Feed"],
       vqRoles: { socle: "Base", rot: "Rotation" }
     },
     fr: {
@@ -290,7 +290,7 @@
       vqRemoveBtn: "Retiré", vqAdd: "Ajouter", vqDelete: "Supprimer la vasque",
       vqPlantNow: "À planter maintenant :", vqBulbs: "bulbes", vqPlantsW: "plants",
       vqUnderlayer: "Les bulbes forment la sous-couche : les planter au fond, puis les plantes de couverture par-dessus.",
-      vqBloomNow: "En fleurs actuellement :",
+      vqBloomNow: "En fleurs actuellement :", vqFertLine: "Engrais :",
       vqGapPre: "Trous de floraison à venir :", vqGapOk: "Les plantations ci-dessus les couvriront.",
       vqGapWarn: "Rien de plantable maintenant ne les couvre — penser à",
       vqNothing: "Rien à faire ce mois-ci — arroser, retirer les fleurs fanées, admirer.",
@@ -300,7 +300,7 @@
       vqResetSocle: "la rotation repart de zéro — à retirer aussi pour repartir propre",
       vqCalendar: "Calendrier de plantation (toutes vasques)",
       vqCalendarNote: "Fenêtres pour un climat français ; les gélives d'été ne sortent qu'après les saints de glace (mi-mai). Densités indicatives — les bulbes se plantent en sous-couche sous les plantes de couverture.",
-      vqCalCols: ["Plante", "Plantation", "Floraison", "Densité", "Exposition"],
+      vqCalCols: ["Plante", "Plantation", "Floraison", "Densité", "Exposition", "Engrais"],
       vqRoles: { socle: "Socle", rot: "Rotation" }
     }
   };
@@ -461,6 +461,28 @@
       ["Blueberry", "Camellia", "Hydrangea", "Azalea"])
   ];
 
+  // Which product from the fertilizer stack (Stock tab) feeds each group
+  var GROUP_FERT = {
+    tropicals: { fr: "purin d'ortie-prêle-consoude, dilué à 5 %", en: "fermented nettle blend, diluted to 5 %" },
+    anthurium: { fr: "engrais liquide fleuri, riche en P-K", en: "liquid bloom feed, high P-K" },
+    "semi-succulents": { fr: "purin à demi-dose", en: "fermented blend at half dose" },
+    cacti: { fr: "purin à demi-dose", en: "fermented blend at half dose" },
+    epiphytes: { fr: "purin à demi-dose ; engrais fleuri dès les boutons (sept.)", en: "fermented blend at half dose; bloom feed once buds show (Sept.)" },
+    "fine-roots": { fr: "purin léger tant qu'il y a des feuilles", en: "light fermented blend while in leaf" },
+    bulbs: { fr: "engrais fleuri, riche en potasse", en: "bloom feed, high potash" },
+    ferns: { fr: "purin à demi-dose", en: "fermented blend at half dose" },
+    orchids: { fr: "engrais équilibré à demi-dose, sur racines humides", en: "balanced liquid feed at half dose, on damp roots" },
+    mediterranean: { fr: "purins (fenêtre mars–août)", en: "fermented teas (March–August window)" },
+    "potted-flowers": { fr: "engrais fleuri — chaque semaine en été", en: "bloom feed — weekly in summer" },
+    hellebores: { fr: "purin léger tant qu'elle boutonne et fleurit", en: "light fermented blend while it buds and blooms" },
+    rockery: null,
+    "acid-lovers": { fr: "engrais spécial bruyère liquide ; fer chélaté si les feuilles jaunissent", en: "ericaceous liquid feed; chelated iron if leaves yellow" }
+  };
+  function gfert(g) {
+    var f = GROUP_FERT[g.id];
+    return f ? (lang === "fr" ? f.fr : f.en) : "";
+  }
+
   var STOCK = [
     { cat: "Substrates", items: [
       { id: "potting-soil", label: "Quality all-purpose potting soil", note: "The base of every mix — light and airy, but low in nutrients" },
@@ -494,15 +516,15 @@
     { id: "hellebore", fr: "Hellébore", en: "Hellebore", role: "socle", type: "plant", lpp: 20,
       plant: [8, 9, 10], bloom: [10, 11, 0, 1, 2], sun: ["half", "shade"],
       noteFr: "La vraie fleur d'hiver, vivace et permanente. Pot profond, jamais à sec.",
-      noteEn: "The true winter flower, a permanent perennial. Deep pot, never bone dry." },
+      noteEn: "The true winter flower, a permanent perennial. Deep pot, never bone dry.", fertFr: "purin léger à demi-dose tant qu'elle boutonne et fleurit", fertEn: "light fermented blend, half dose while it buds and blooms" },
     { id: "heather-winter", fr: "Bruyère d'hiver (erica)", en: "Winter heath (erica)", role: "socle", type: "plant", lpp: 5,
       plant: [8, 9, 10], bloom: [0, 1, 2, 3], sun: ["sun", "half"],
       noteFr: "Fleurit de janvier à avril sans soin. Rabattre légèrement après floraison.",
-      noteEn: "Blooms January to April, carefree. Light trim after flowering." },
+      noteEn: "Blooms January to April, carefree. Light trim after flowering.", fertFr: "engrais bruyère léger après la floraison", fertEn: "light ericaceous feed after flowering" },
     { id: "heather-fall", fr: "Bruyère d'automne (calluna)", en: "Autumn heather (calluna)", role: "socle", type: "plant", lpp: 5,
       plant: [8, 9], bloom: [8, 9, 10], sun: ["sun"],
       noteFr: "Rose ou blanche de septembre à novembre. Rabattre après floraison.",
-      noteEn: "Pink or white from September to November. Trim after flowering." },
+      noteEn: "Pink or white from September to November. Trim after flowering.", fertFr: "engrais bruyère léger après la floraison", fertEn: "light ericaceous feed after flowering" },
     { id: "ivy", fr: "Lierre retombant", en: "Trailing ivy", role: "socle", type: "plant", lpp: 15,
       plant: [3, 4, 8, 9, 10], bloom: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], sun: ["sun", "half", "shade"],
       noteFr: "Feuillage persistant qui retombe des vasques — le liant des compositions.",
@@ -516,19 +538,19 @@
       rmFr: "finies par la chaleur — à remplacer par les estivales après les saints de glace (mi-mai)",
       rmEn: "done in by the heat — replace with summer bedding after the last frost (mid-May)",
       noteFr: "La couverture d'hiver : quelques fleurs dès l'automne, plein pot de février à mai.",
-      noteEn: "The winter cover: a few blooms in autumn, a full pot from February to May." },
+      noteEn: "The winter cover: a few blooms in autumn, a full pot from February to May.", fertFr: "purin léger de février à avril", fertEn: "light fermented blend Feb.–Apr." },
     { id: "myosotis", fr: "Myosotis", en: "Forget-me-nots", role: "rot", type: "plant", lpp: 4,
       plant: [8, 9], bloom: [2, 3, 4], sun: ["half", "shade"], remove: [4],
       rmFr: "finies — à remplacer par les estivales après mi-mai",
       rmEn: "finished — replace with summer bedding after mid-May",
       noteFr: "Nuage bleu de mars à mai, parfait entre les bulbes.",
-      noteEn: "A blue cloud from March to May, lovely between bulbs." },
+      noteEn: "A blue cloud from March to May, lovely between bulbs.", fertFr: "purin léger de mars à avril", fertEn: "light fermented blend Mar.–Apr." },
     { id: "daisy", fr: "Pâquerettes", en: "Daisies (bellis)", role: "rot", type: "plant", lpp: 4,
       plant: [8, 9], bloom: [2, 3, 4, 5], sun: ["half"], remove: [4],
       rmFr: "elles se rattrapent en mai — à remplacer par les estivales",
       rmEn: "they go over in May — replace with summer bedding",
       noteFr: "Petites marguerites roses ou blanches, mars à juin.",
-      noteEn: "Small pink or white daisies, March to June." },
+      noteEn: "Small pink or white daisies, March to June.", fertFr: "purin léger de mars à avril", fertEn: "light fermented blend Mar.–Apr." },
     { id: "cabbage", fr: "Chou décoratif", en: "Ornamental kale", role: "rot", type: "plant", lpp: 8,
       plant: [8, 9, 10], bloom: [9, 10, 11, 0, 1, 2], sun: ["sun", "half"], remove: [3],
       rmFr: "il monte à fleur et dépérit au printemps — à remplacer",
@@ -540,19 +562,19 @@
       rmFr: "laisser jaunir le feuillage puis retirer les bulbes — en pot ils sont souvent épuisés, à racheter chaque année",
       rmEn: "let the foliage yellow then lift the bulbs — in pots they are usually spent, buy fresh each year",
       noteFr: "Se plantent jusqu'en décembre, au fond de la vasque, sous les pensées.",
-      noteEn: "Plant until December, at the bottom of the planter, beneath the pansies." },
+      noteEn: "Plant until December, at the bottom of the planter, beneath the pansies.", fertFr: "engrais fleuri dès que la pointe paraît", fertEn: "bloom feed once the bud tip shows" },
     { id: "daffodil", fr: "Narcisses nains", en: "Dwarf daffodils", role: "rot", type: "bulb", bulbsPerM2: 100,
       plant: [8, 9, 10], bloom: [2, 3], sun: ["sun", "half"], remove: [4],
       rmFr: "laisser jaunir le feuillage puis retirer les bulbes",
       rmEn: "let the foliage yellow then lift the bulbs",
       noteFr: "« Tête-à-tête » : petits narcisses de mars, reviennent bien chaque année.",
-      noteEn: "'Tête-à-tête': small March daffodils, come back well each year." },
+      noteEn: "'Tête-à-tête': small March daffodils, come back well each year.", fertFr: "engrais fleuri dès que la pointe paraît", fertEn: "bloom feed once the bud tip shows" },
     { id: "hyacinth", fr: "Jacinthes", en: "Hyacinths", role: "rot", type: "bulb", bulbsPerM2: 45,
       plant: [9, 10], bloom: [2, 3], sun: ["sun", "half"], remove: [4],
       rmFr: "laisser jaunir le feuillage puis retirer les bulbes",
       rmEn: "let the foliage yellow then lift the bulbs",
       noteFr: "Parfum puissant ; se forcent aussi à l'intérieur.",
-      noteEn: "Strong fragrance; also force well indoors." },
+      noteEn: "Strong fragrance; also force well indoors.", fertFr: "engrais fleuri dès que la pointe paraît", fertEn: "bloom feed once the bud tip shows" },
     { id: "muscari", fr: "Muscari", en: "Grape hyacinths", role: "rot", type: "bulb", bulbsPerM2: 160,
       plant: [9, 10], bloom: [2, 3], sun: ["sun", "half"], remove: [4],
       rmFr: "laisser jaunir le feuillage puis retirer les bulbes",
@@ -570,49 +592,49 @@
       rmFr: "gélif — la première gelée le tue : à vider avant (début novembre), puis replanter bisannuelles et bulbes",
       rmEn: "frost-tender — the first frost kills it: clear it out before (early November), then replant biennials and bulbs",
       noteFr: "Le roc des vasques d'été, généreux jusqu'en octobre. Engrais fleuri hebdomadaire.",
-      noteEn: "The backbone of summer planters, generous until October. Weekly bloom feed." },
+      noteEn: "The backbone of summer planters, generous until October. Weekly bloom feed.", fertFr: "engrais fleuri tous les 15 jours, chaque semaine en plein été", fertEn: "bloom feed every 2 weeks, weekly in mid-summer" },
     { id: "petunia", fr: "Pétunias & surfinias", en: "Petunias & surfinias", role: "rot", type: "plant", lpp: 8,
       plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["sun"], remove: [9, 10],
       rmFr: "gélif — la première gelée le tue : à vider avant (début novembre), puis replanter bisannuelles et bulbes",
       rmEn: "frost-tender — the first frost kills it: clear it out before (early November), then replant biennials and bulbs",
       noteFr: "Les plus gourmandes du jardin : engrais fleuri chaque semaine en été.",
-      noteEn: "The hungriest plants in the garden: weekly bloom feed in summer." },
+      noteEn: "The hungriest plants in the garden: weekly bloom feed in summer.", fertFr: "engrais fleuri chaque semaine — les plus gourmandes", fertEn: "bloom feed weekly — the hungriest" },
     { id: "verbena", fr: "Verbes", en: "Verbenas", role: "rot", type: "plant", lpp: 10,
       plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["sun", "half"], remove: [9, 10],
       rmFr: "gélif — à vider avant les premières gelées",
       rmEn: "frost-tender — clear out before the first frosts",
       noteFr: "Plates et longues floraisons, supportent bien la sécheresse.",
-      noteEn: "Flat, long-lasting blooms, copes well with drought." },
+      noteEn: "Flat, long-lasting blooms, copes well with drought.", fertFr: "engrais fleuri tous les 15 jours", fertEn: "bloom feed every 2 weeks" },
     { id: "bidens", fr: "Bidens", en: "Bidens", role: "rot", type: "plant", lpp: 10,
       plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["sun"], remove: [9, 10],
       rmFr: "gélif — à vider avant les premières gelées",
       rmEn: "frost-tender — clear out before the first frosts",
       noteFr: "Or et cascade, parfait en bord de vasque.",
-      noteEn: "Gold and cascading, perfect on the planter's edge." },
+      noteEn: "Gold and cascading, perfect on the planter's edge.", fertFr: "engrais fleuri tous les 15 jours", fertEn: "bloom feed every 2 weeks" },
     { id: "sanvitalia", fr: "Sanvitalia", en: "Sanvitalia", role: "rot", type: "plant", lpp: 10,
       plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["sun"], remove: [9, 10],
       rmFr: "gélif — à vider avant les premières gelées",
       rmEn: "frost-tender — clear out before the first frosts",
       noteFr: "Petites marguerites sans interruption jusqu'aux gelées.",
-      noteEn: "Small daisies non-stop until the frosts." },
+      noteEn: "Small daisies non-stop until the frosts.", fertFr: "engrais fleuri tous les 15 jours", fertEn: "bloom feed every 2 weeks" },
     { id: "begonia", fr: "Bégonias semperflorens", en: "Wax begonias", role: "rot", type: "plant", lpp: 4,
       plant: [3, 4], bloom: [3, 4, 5, 6, 7, 8, 9], sun: ["half", "shade"], remove: [9, 10],
       rmFr: "gélif — à vider avant les premières gelées",
       rmEn: "frost-tender — clear out before the first frosts",
       noteFr: "Le roc des vasques à l'ombre, sans entretien.",
-      noteEn: "The backbone of shady planters, zero care." },
+      noteEn: "The backbone of shady planters, zero care.", fertFr: "engrais fleuri tous les 15 jours", fertEn: "bloom feed every 2 weeks" },
     { id: "impatiens", fr: "Impatiens / Sunpatiens", en: "Impatiens / Sunpatiens", role: "rot", type: "plant", lpp: 5,
       plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["half", "shade"], remove: [9, 10],
       rmFr: "gélif — à vider avant les premières gelées",
       rmEn: "frost-tender — clear out before the first frosts",
       noteFr: "Couleur en abondance à l'ombre, arrosage régulier.",
-      noteEn: "Colour in abundance in the shade, keep evenly watered." },
+      noteEn: "Colour in abundance in the shade, keep evenly watered.", fertFr: "engrais fleuri tous les 15 jours", fertEn: "bloom feed every 2 weeks" },
     { id: "dahlia-dwarf", fr: "Dahlias nains (bulbes)", en: "Dwarf dahlias (tubers)", role: "rot", type: "plant", lpp: 7,
       plant: [4], bloom: [5, 6, 7, 8, 9], sun: ["sun"], remove: [9, 10],
       rmFr: "gélif — à vider avant les premières gelées",
       rmEn: "frost-tender — clear out before the first frosts",
       noteFr: "Tubercules plantés mi-mai, fleurs jusqu'aux gelées ; engrais fleuri régulier.",
-      noteEn: "Tubers planted mid-May, flowers until frost; regular bloom feed." }
+      noteEn: "Tubers planted mid-May, flowers until frost; regular bloom feed.", fertFr: "engrais fleuri chaque semaine de juillet à septembre", fertEn: "bloom feed weekly July–Sept." }
   ];
 
   // ---------- State ----------
@@ -696,7 +718,7 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-  function inSeason(g) { var m = new Date().getMonth() + 1; var end = (g && g.seasonEnd) || 10; return m >= 3 && m <= end; }
+  function inSeason(g) { var m = currentMonth() + 1; var end = (g && g.seasonEnd) || 10; return m >= 3 && m <= end; }
   function grp(id) {
     for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i].id === id) return GROUPS[i];
     return GROUPS[0];
@@ -777,9 +799,9 @@
       var p = r.p, g = r.g, fs = r.fs;
       var banner;
       if (fs.kind === "due") {
-        banner = '<div class="banner due">' + T.bannerDue + "</div>";
+        banner = '<div class="banner due">' + T.bannerDue + (gfert(g) ? " — " + esc(gfert(g)) : "") + "</div>";
       } else if (fs.kind === "wdue") {
-        banner = '<div class="banner due">' + T.bannerWinterDue + "</div>";
+        banner = '<div class="banner due">' + T.bannerWinterDue + (gfert(g) ? " — " + esc(gfert(g)) : "") + "</div>";
       } else if (fs.kind === "waiting") {
         banner = '<div class="banner wait">' + T.bannerWaitPre + " " + fs.remaining + " " +
           (fs.remaining > 1 ? T.bannerWaitPl : T.bannerWaitSg) + "</div>";
@@ -835,7 +857,7 @@
         '<div class="small" style="margin:8px 0">' +
         (g.fertEvery === null
           ? T.fertNever
-          : T.fertEveryPre + " " + (g.fertEvery === 1 ? T.fertEveryW : g.fertEvery + " " + T.fertEveryPl) + " " + (g.winterFeed ? T.fertSeasonAll : seasonLabel(g))) +
+          : T.fertEveryPre + " " + (g.fertEvery === 1 ? T.fertEveryW : g.fertEvery + " " + T.fertEveryPl) + " " + (g.winterFeed ? T.fertSeasonAll : seasonLabel(g)) + (gfert(g) ? " — " + esc(gfert(g)) : "")) +
         "</div>" +
         (gnote(g) ? '<div class="small" style="color:var(--muted)">' + esc(gnote(g)) + "</div>" : "") +
         '<div class="chips" style="margin-top:8px">';
@@ -1051,6 +1073,17 @@
         h += '<div class="small" style="margin:6px 0 0">' + T.vqBloomNow + " " +
           '<span class="badge dark">' + esc(vpName(b.p)) + " ×" + b.e.qty + "</span></div>";
       });
+      var fertNow = [];
+      v.entries.forEach(function (e) {
+        var p = vp(e.pid);
+        if (p.fertFr && p.bloom.indexOf(m) > -1) fertNow.push(p);
+      });
+      if (fertNow.length) {
+        h += '<div class="small" style="margin:6px 0 0">' + T.vqFertLine + " " +
+          fertNow.map(function (p) {
+            return '<span class="badge">' + esc(vpName(p)) + " : " + esc(lang === "fr" ? p.fertFr : p.fertEn) + "</span>";
+          }).join(" ") + "</div>";
+      }
       t.removes.forEach(function (r) {
         h += '<div class="banner due" style="margin:8px 0 4px">' + esc(vpName(r.p)) + " ×" + r.e.qty + " — " +
           esc(r.reset ? T.vqResetSocle : (lang === "fr" ? r.p.rmFr : r.p.rmEn)) +
@@ -1108,7 +1141,8 @@
     }).forEach(function (p) {
       h += "<tr><td><strong>" + esc(vpName(p)) + '</strong> <span class="badge ghost" style="font-size:0.6rem">' + T.vqRoles[p.role] + "</span></td>" +
         "<td>" + monthWindow(p.plant) + "</td><td>" + monthWindow(p.bloom) + "</td>" +
-        "<td>" + vqDensityStr(p) + "</td><td>" + p.sun.map(vqSunLabel).join(", ") + "</td></tr>";
+        "<td>" + vqDensityStr(p) + "</td><td>" + p.sun.map(vqSunLabel).join(", ") + "</td>" +
+        "<td>" + (p.fertFr ? esc(lang === "fr" ? p.fertFr : p.fertEn) : "—") + "</td></tr>";
     });
     h += "</table></div>";
 
