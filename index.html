@@ -568,7 +568,7 @@
     var h = '<div class="filters row" style="margin-bottom:10px">' +
       '<button data-filter="all" class="' + (filter === "all" ? "active" : "") + '">' + T.filters.all + "</button>" +
       '<button data-filter="Indoor" class="' + (filter === "Indoor" ? "active" : "") + '">' + T.filters.Indoor + "</button>" +
-      '<button data-filter="Outdoor" class="' + (filter === "Outdoor" ? "active" : "") + '">' + T.filters.Outdoor + "</button></div><div class="grid">";
+      '<button data-filter="Outdoor" class="' + (filter === "Outdoor" ? "active" : "") + '">' + T.filters.Outdoor + '</button></div><div class="grid">';
 
     GROUPS.forEach(function (g) {
       if (filter !== "all" && g.zone !== filter) return;
