@@ -129,6 +129,14 @@
     background: linear-gradient(120deg, #06b6d4, #8b5cf6); color: #fff;
   }
   .addform { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .tl { margin: 10px 0 4px; }
+  .tl-head, .tl-row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
+  .tl-head span { font-size: 0.58rem; color: var(--muted); text-align: center; }
+  .tl-row { height: 10px; margin-top: 3px; }
+  .tl-row span { background: #edebf7; border-radius: 3px; }
+  .tl-row.cov span { background: #c4b5fd; }
+  .tl-row.cov span.gap { background: #fbbf24; }
+  .badge .x { font-size: 0.75rem; padding: 0 3px; }
   @media (max-width: 600px) {
     nav button { padding: 8px 11px; font-size: 0.78rem; }
     header .inner { justify-content: center; text-align: center; flex-direction: column; gap: 6px; }
@@ -153,6 +161,7 @@
 <nav>
   <button data-tab="plantes" class="active" id="nav-plantes">My plants</button>
   <button data-tab="melanges" id="nav-melanges">Mixes</button>
+  <button data-tab="vasques" id="nav-vasques">Planters</button>
   <button data-tab="stock" id="nav-stock">Stock</button>
 </nav>
 <main id="view"></main>
@@ -176,7 +185,7 @@
   var STR = {
     en: {
       subtitle: "Soil mixes & fertilizer, by observation",
-      nav: { plantes: "My plants", melanges: "Mixes", stock: "Stock" },
+      nav: { plantes: "My plants", melanges: "Mixes", vasques: "Planters", stock: "Stock" },
       filters: { all: "All", Indoor: "Indoor", Outdoor: "Outdoor" },
       dueBadge: "Fertilizer due:",
       plantsBadgeSg: "plant", plantsBadgePl: "plants",
@@ -209,11 +218,34 @@
       ownedMid: "/", ownedEnd: "products owned",
       substTitle: "Substitutions: equivalents & dosages",
       th: ["Replace…", "With…", "Dosage", "Note"],
-      substRule: "Rule of thumb: mineral substitutes of equivalent grain size swap at equal volume. Only fine sand (halve the dose) and grain size (crush it for small pots) ever need adjusting."
+      substRule: "Rule of thumb: mineral substitutes of equivalent grain size swap at equal volume. Only fine sand (halve the dose) and grain size (crush it for small pots) ever need adjusting.",
+      vqIntro: "Outdoor planters: a permanent evergreen base + seasonal rotations on top. Declare each planter once — volume and exposure — and the app tells you what to do every month.",
+      vqNew: "New planter:", vqNamePh: "Terrace bowl…", vqVolume: "L",
+      vqSunS: "Sun", vqSunH: "Part shade", vqSunSh: "Shade",
+      vqModeSocle: "Base + rotations", vqModeFull: "Full rotations",
+      vqModeHint: "Base + rotations: the evergreen base stays for years, only the top layer rotates. Full rotations: the whole planter is redone each season.",
+      vqEmpty: "No planter yet — create the first one and the app runs the successions for you.",
+      vqThisMonth: "This month", vqContents: "Contents",
+      vqEmptyContents: "Empty — start with the base (hellebore, winter heath, ivy), then rotate on top.",
+      vqRemoveBtn: "Cleared", vqAdd: "Add", vqDelete: "Delete planter",
+      vqPlantNow: "Plant now:", vqBulbs: "bulbs", vqPlantsW: "plants",
+      vqUnderlayer: "Bulbs are the underlayer: plant them deep, cover plants on top.",
+      vqBloomNow: "In bloom now:",
+      vqGapPre: "Bloom gaps ahead:", vqGapOk: "The plant-now picks above will cover them.",
+      vqGapWarn: "Nothing plantable now covers them — think of",
+      vqNothing: "Nothing to do this month — water, deadhead, enjoy.",
+      vqCoverage: "Yearly coverage (amber = gap)",
+      vqLegSocle: "Evergreen base", vqLegCov: "Rotation plants", vqLegBulb: "Bulbs (underlayer)", vqLegGap: "Gap",
+      vqFullReset: "Full rotation: time for the big reset — clear what is tired, loosen the topsoil, replant the new season.",
+      vqResetSocle: "rotation is starting from scratch — remove it too if you want a clean slate",
+      vqCalendar: "Planting calendar (all planters)",
+      vqCalendarNote: "Windows for a French climate; summer bedding goes out only after the last frost (mid-May). Densities are a guide — bulbs are an underlayer beneath the cover plants.",
+      vqCalCols: ["Plant", "Plant in", "Blooms", "Density", "Exposure"],
+      vqRoles: { socle: "Base", rot: "Rotation" }
     },
     fr: {
       subtitle: "Substrats & engrais, à l'observation",
-      nav: { plantes: "Mes plantes", melanges: "Mélanges", stock: "Stock" },
+      nav: { plantes: "Mes plantes", melanges: "Mélanges", vasques: "Vasques", stock: "Stock" },
       filters: { all: "Tous", Indoor: "Intérieur", Outdoor: "Extérieur" },
       dueBadge: "Engrais à apporter :",
       plantsBadgeSg: "plante", plantsBadgePl: "plantes",
@@ -246,7 +278,30 @@
       ownedMid: "/", ownedEnd: "produits en stock",
       substTitle: "Substitutions : équivalents & dosages",
       th: ["Remplacer…", "Par…", "Dosage", "Note"],
-      substRule: "Règle simple : les minéraux de granulométrie équivalente se remplacent à volume égal. Seuls le sable fin (doser de moitié) et la granulométrie (concasser pour les petits pots) demandent un ajustement."
+      substRule: "Règle simple : les minéraux de granulométrie équivalente se remplacent à volume égal. Seuls le sable fin (doser de moitié) et la granulométrie (concasser pour les petits pots) demandent un ajustement.",
+      vqIntro: "Vasques et jardinières d'extérieur : un socle persistant + des rotations saisonnières par-dessus. Déclarer chaque vasque une fois — volume et exposition — et l'app indique chaque mois quoi faire.",
+      vqNew: "Nouvelle vasque :", vqNamePh: "Vasque terrasse…", vqVolume: "L",
+      vqSunS: "Soleil", vqSunH: "Mi-ombre", vqSunSh: "Ombre",
+      vqModeSocle: "Socle + rotations", vqModeFull: "Rotations complètes",
+      vqModeHint: "Socle + rotations : le socle persistant reste plusieurs années, seule la couche du dessus tourne. Rotations complètes : toute la vasque est refaite à chaque saison.",
+      vqEmpty: "Pas encore de vasque — créer la première, l'app gère les successions.",
+      vqThisMonth: "Ce mois-ci", vqContents: "Contenu",
+      vqEmptyContents: "Vide — commencer par le socle (hellébore, bruyère d'hiver, lierre), puis faire tourner par-dessus.",
+      vqRemoveBtn: "Retiré", vqAdd: "Ajouter", vqDelete: "Supprimer la vasque",
+      vqPlantNow: "À planter maintenant :", vqBulbs: "bulbes", vqPlantsW: "plants",
+      vqUnderlayer: "Les bulbes forment la sous-couche : les planter au fond, puis les plantes de couverture par-dessus.",
+      vqBloomNow: "En fleurs actuellement :",
+      vqGapPre: "Trous de floraison à venir :", vqGapOk: "Les plantations ci-dessus les couvriront.",
+      vqGapWarn: "Rien de plantable maintenant ne les couvre — penser à",
+      vqNothing: "Rien à faire ce mois-ci — arroser, retirer les fleurs fanées, admirer.",
+      vqCoverage: "Couverture de l'année (ambre = trou)",
+      vqLegSocle: "Socle persistant", vqLegCov: "Plantes de rotation", vqLegBulb: "Bulbes (sous-couche)", vqLegGap: "Trou",
+      vqFullReset: "Rotation complète : c'est le moment du grand nettoyage — vider ce qui fatigue, griffer le terreau en surface, replanter la nouvelle saison.",
+      vqResetSocle: "la rotation repart de zéro — à retirer aussi pour repartir propre",
+      vqCalendar: "Calendrier de plantation (toutes vasques)",
+      vqCalendarNote: "Fenêtres pour un climat français ; les gélives d'été ne sortent qu'après les saints de glace (mi-mai). Densités indicatives — les bulbes se plantent en sous-couche sous les plantes de couverture.",
+      vqCalCols: ["Plante", "Plantation", "Floraison", "Densité", "Exposition"],
+      vqRoles: { socle: "Socle", rot: "Rotation" }
     }
   };
   var T = STR[lang];
@@ -431,6 +486,135 @@
     ["Coco", "Blonde peat", "Same volume", "Peat needs rehydrating too"]
   ];
 
+  // ---------- Vasques: outdoor planter palette ----------
+  // role: "socle" (permanent base) | "rot" (seasonal rotation)
+  // density: lpp = litres per plant, or bulbsPerM2 for bulbs (underlayer)
+  // months are 0-indexed (0 = January)
+  var VASE_PLANTS = [
+    { id: "hellebore", fr: "Hellébore", en: "Hellebore", role: "socle", type: "plant", lpp: 20,
+      plant: [8, 9, 10], bloom: [10, 11, 0, 1, 2], sun: ["half", "shade"],
+      noteFr: "La vraie fleur d'hiver, vivace et permanente. Pot profond, jamais à sec.",
+      noteEn: "The true winter flower, a permanent perennial. Deep pot, never bone dry." },
+    { id: "heather-winter", fr: "Bruyère d'hiver (erica)", en: "Winter heath (erica)", role: "socle", type: "plant", lpp: 5,
+      plant: [8, 9, 10], bloom: [0, 1, 2, 3], sun: ["sun", "half"],
+      noteFr: "Fleurit de janvier à avril sans soin. Rabattre légèrement après floraison.",
+      noteEn: "Blooms January to April, carefree. Light trim after flowering." },
+    { id: "heather-fall", fr: "Bruyère d'automne (calluna)", en: "Autumn heather (calluna)", role: "socle", type: "plant", lpp: 5,
+      plant: [8, 9], bloom: [8, 9, 10], sun: ["sun"],
+      noteFr: "Rose ou blanche de septembre à novembre. Rabattre après floraison.",
+      noteEn: "Pink or white from September to November. Trim after flowering." },
+    { id: "ivy", fr: "Lierre retombant", en: "Trailing ivy", role: "socle", type: "plant", lpp: 15,
+      plant: [3, 4, 8, 9, 10], bloom: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], sun: ["sun", "half", "shade"],
+      noteFr: "Feuillage persistant qui retombe des vasques — le liant des compositions.",
+      noteEn: "Evergreen foliage trailing over the rim — the binder of any composition." },
+    { id: "carex", fr: "Carex", en: "Sedge (carex)", role: "socle", type: "plant", lpp: 12,
+      plant: [3, 4, 8, 9, 10], bloom: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], sun: ["sun", "half", "shade"],
+      noteFr: "Graminée persistante : structure et mouvement toute l'année.",
+      noteEn: "Evergreen grass: structure and movement all year." },
+    { id: "pansy", fr: "Pensées & violas", en: "Pansies & violas", role: "rot", type: "plant", lpp: 3,
+      plant: [8, 9, 10], bloom: [1, 2, 3, 4], sun: ["sun", "half"], remove: [4],
+      rmFr: "finies par la chaleur — à remplacer par les estivales après les saints de glace (mi-mai)",
+      rmEn: "done in by the heat — replace with summer bedding after the last frost (mid-May)",
+      noteFr: "La couverture d'hiver : quelques fleurs dès l'automne, plein pot de février à mai.",
+      noteEn: "The winter cover: a few blooms in autumn, a full pot from February to May." },
+    { id: "myosotis", fr: "Myosotis", en: "Forget-me-nots", role: "rot", type: "plant", lpp: 4,
+      plant: [8, 9], bloom: [2, 3, 4], sun: ["half", "shade"], remove: [4],
+      rmFr: "finies — à remplacer par les estivales après mi-mai",
+      rmEn: "finished — replace with summer bedding after mid-May",
+      noteFr: "Nuage bleu de mars à mai, parfait entre les bulbes.",
+      noteEn: "A blue cloud from March to May, lovely between bulbs." },
+    { id: "daisy", fr: "Pâquerettes", en: "Daisies (bellis)", role: "rot", type: "plant", lpp: 4,
+      plant: [8, 9], bloom: [2, 3, 4, 5], sun: ["half"], remove: [4],
+      rmFr: "elles se rattrapent en mai — à remplacer par les estivales",
+      rmEn: "they go over in May — replace with summer bedding",
+      noteFr: "Petites marguerites roses ou blanches, mars à juin.",
+      noteEn: "Small pink or white daisies, March to June." },
+    { id: "cabbage", fr: "Chou décoratif", en: "Ornamental kale", role: "rot", type: "plant", lpp: 8,
+      plant: [8, 9, 10], bloom: [9, 10, 11, 0, 1, 2], sun: ["sun", "half"], remove: [3],
+      rmFr: "il monte à fleur et dépérit au printemps — à remplacer",
+      rmEn: "it bolts and fades in spring — replace it",
+      noteFr: "Feuillage violet ou blanc qui tient tout l'hiver, même sous la neige.",
+      noteEn: "Violet or white foliage that holds all winter, even under snow." },
+    { id: "tulip", fr: "Tulipes", en: "Tulips", role: "rot", type: "bulb", bulbsPerM2: 130,
+      plant: [9, 10, 11], bloom: [3, 4], sun: ["sun", "half"], remove: [4],
+      rmFr: "laisser jaunir le feuillage puis retirer les bulbes — en pot ils sont souvent épuisés, à racheter chaque année",
+      rmEn: "let the foliage yellow then lift the bulbs — in pots they are usually spent, buy fresh each year",
+      noteFr: "Se plantent jusqu'en décembre, au fond de la vasque, sous les pensées.",
+      noteEn: "Plant until December, at the bottom of the planter, beneath the pansies." },
+    { id: "daffodil", fr: "Narcisses nains", en: "Dwarf daffodils", role: "rot", type: "bulb", bulbsPerM2: 100,
+      plant: [8, 9, 10], bloom: [2, 3], sun: ["sun", "half"], remove: [4],
+      rmFr: "laisser jaunir le feuillage puis retirer les bulbes",
+      rmEn: "let the foliage yellow then lift the bulbs",
+      noteFr: "« Tête-à-tête » : petits narcisses de mars, reviennent bien chaque année.",
+      noteEn: "'Tête-à-tête': small March daffodils, come back well each year." },
+    { id: "hyacinth", fr: "Jacinthes", en: "Hyacinths", role: "rot", type: "bulb", bulbsPerM2: 45,
+      plant: [9, 10], bloom: [2, 3], sun: ["sun", "half"], remove: [4],
+      rmFr: "laisser jaunir le feuillage puis retirer les bulbes",
+      rmEn: "let the foliage yellow then lift the bulbs",
+      noteFr: "Parfum puissant ; se forcent aussi à l'intérieur.",
+      noteEn: "Strong fragrance; also force well indoors." },
+    { id: "muscari", fr: "Muscari", en: "Grape hyacinths", role: "rot", type: "bulb", bulbsPerM2: 160,
+      plant: [9, 10], bloom: [2, 3], sun: ["sun", "half"], remove: [4],
+      rmFr: "laisser jaunir le feuillage puis retirer les bulbes",
+      rmEn: "let the foliage yellow then lift the bulbs",
+      noteFr: "Petites touffes bleues de mars, se naturalisent.",
+      noteEn: "Little blue clumps in March, they naturalize." },
+    { id: "crocus", fr: "Crocus", en: "Crocuses", role: "rot", type: "bulb", bulbsPerM2: 240,
+      plant: [8, 9], bloom: [1, 2], sun: ["sun", "half"], remove: [4],
+      rmFr: "laisser jaunir le feuillage puis retirer les bulbes",
+      rmEn: "let the foliage yellow then lift the bulbs",
+      noteFr: "Les premières fleurs de février, adorées des abeilles. À planter tôt (sept.–oct.).",
+      noteEn: "The first February flowers, loved by bees. Plant early (Sept.–Oct.)." },
+    { id: "geranium-ivy", fr: "Géraniums lierres", en: "Ivy-leaved geraniums", role: "rot", type: "plant", lpp: 8,
+      plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["sun"], remove: [9, 10],
+      rmFr: "gélif — la première gelée le tue : à vider avant (début novembre), puis replanter bisannuelles et bulbes",
+      rmEn: "frost-tender — the first frost kills it: clear it out before (early November), then replant biennials and bulbs",
+      noteFr: "Le roc des vasques d'été, généreux jusqu'en octobre. Engrais fleuri hebdomadaire.",
+      noteEn: "The backbone of summer planters, generous until October. Weekly bloom feed." },
+    { id: "petunia", fr: "Pétunias & surfinias", en: "Petunias & surfinias", role: "rot", type: "plant", lpp: 8,
+      plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["sun"], remove: [9, 10],
+      rmFr: "gélif — la première gelée le tue : à vider avant (début novembre), puis replanter bisannuelles et bulbes",
+      rmEn: "frost-tender — the first frost kills it: clear it out before (early November), then replant biennials and bulbs",
+      noteFr: "Les plus gourmandes du jardin : engrais fleuri chaque semaine en été.",
+      noteEn: "The hungriest plants in the garden: weekly bloom feed in summer." },
+    { id: "verbena", fr: "Verbes", en: "Verbenas", role: "rot", type: "plant", lpp: 10,
+      plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["sun", "half"], remove: [9, 10],
+      rmFr: "gélif — à vider avant les premières gelées",
+      rmEn: "frost-tender — clear out before the first frosts",
+      noteFr: "Plates et longues floraisons, supportent bien la sécheresse.",
+      noteEn: "Flat, long-lasting blooms, copes well with drought." },
+    { id: "bidens", fr: "Bidens", en: "Bidens", role: "rot", type: "plant", lpp: 10,
+      plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["sun"], remove: [9, 10],
+      rmFr: "gélif — à vider avant les premières gelées",
+      rmEn: "frost-tender — clear out before the first frosts",
+      noteFr: "Or et cascade, parfait en bord de vasque.",
+      noteEn: "Gold and cascading, perfect on the planter's edge." },
+    { id: "sanvitalia", fr: "Sanvitalia", en: "Sanvitalia", role: "rot", type: "plant", lpp: 10,
+      plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["sun"], remove: [9, 10],
+      rmFr: "gélif — à vider avant les premières gelées",
+      rmEn: "frost-tender — clear out before the first frosts",
+      noteFr: "Petites marguerites sans interruption jusqu'aux gelées.",
+      noteEn: "Small daisies non-stop until the frosts." },
+    { id: "begonia", fr: "Bégonias semperflorens", en: "Wax begonias", role: "rot", type: "plant", lpp: 4,
+      plant: [3, 4], bloom: [3, 4, 5, 6, 7, 8, 9], sun: ["half", "shade"], remove: [9, 10],
+      rmFr: "gélif — à vider avant les premières gelées",
+      rmEn: "frost-tender — clear out before the first frosts",
+      noteFr: "Le roc des vasques à l'ombre, sans entretien.",
+      noteEn: "The backbone of shady planters, zero care." },
+    { id: "impatiens", fr: "Impatiens / Sunpatiens", en: "Impatiens / Sunpatiens", role: "rot", type: "plant", lpp: 5,
+      plant: [4], bloom: [4, 5, 6, 7, 8, 9], sun: ["half", "shade"], remove: [9, 10],
+      rmFr: "gélif — à vider avant les premières gelées",
+      rmEn: "frost-tender — clear out before the first frosts",
+      noteFr: "Couleur en abondance à l'ombre, arrosage régulier.",
+      noteEn: "Colour in abundance in the shade, keep evenly watered." },
+    { id: "dahlia-dwarf", fr: "Dahlias nains (bulbes)", en: "Dwarf dahlias (tubers)", role: "rot", type: "plant", lpp: 7,
+      plant: [4], bloom: [5, 6, 7, 8, 9], sun: ["sun"], remove: [9, 10],
+      rmFr: "gélif — à vider avant les premières gelées",
+      rmEn: "frost-tender — clear out before the first frosts",
+      noteFr: "Tubercules plantés mi-mai, fleurs jusqu'aux gelées ; engrais fleuri régulier.",
+      noteEn: "Tubers planted mid-May, flowers until frost; regular bloom feed." }
+  ];
+
   // ---------- State ----------
   var LS_KEY = "plant-wizard-v1";
   var SEED = [
@@ -474,6 +658,37 @@
   var tab = "plantes";
   var filter = "all";
   var addGroup = GROUPS[0].id;
+
+  // ---------- Vasques state ----------
+  var VQ_KEY = "plant-wizard-vasques";
+  function loadVasques() {
+    try {
+      var raw = localStorage.getItem(VQ_KEY);
+      if (raw) {
+        var v = JSON.parse(raw);
+        if (Array.isArray(v)) {
+          return v.filter(function (x) { return x && x.id; }).map(function (x) {
+            return {
+              id: x.id,
+              name: typeof x.name === "string" && x.name ? x.name : "Vasque",
+              volume: Math.max(5, Math.min(500, parseInt(x.volume, 10) || 39)),
+              sun: ["sun", "half", "shade"].indexOf(x.sun) > -1 ? x.sun : "sun",
+              mode: x.mode === "full" ? "full" : "socle",
+              entries: Array.isArray(x.entries)
+                ? x.entries.filter(function (e) { return e && typeof e.pid === "string"; })
+                    .map(function (e) { return { pid: e.pid, qty: Math.max(1, parseInt(e.qty, 10) || 1) }; })
+                : []
+            };
+          });
+        }
+      }
+    } catch (e) { /* storage unavailable */ }
+    return [];
+  }
+  var vasques = loadVasques();
+  function saveVasques() {
+    try { localStorage.setItem(VQ_KEY, JSON.stringify(vasques)); } catch (e) { /* in-memory only */ }
+  }
 
   // ---------- Helpers ----------
   function esc(s) {
@@ -661,6 +876,245 @@
     view.innerHTML = h;
   }
 
+  // ---------- Vasques helpers & rendering ----------
+  function currentMonth() {
+    if (typeof PW_TEST_MONTH !== "undefined") return PW_TEST_MONTH;
+    return new Date().getMonth();
+  }
+  function vp(id) {
+    for (var i = 0; i < VASE_PLANTS.length; i++) if (VASE_PLANTS[i].id === id) return VASE_PLANTS[i];
+    return VASE_PLANTS[0];
+  }
+  function vpName(p) { return lang === "fr" ? p.fr : p.en; }
+  function vqSunLabel(s) {
+    var m = lang === "fr" ? { sun: "Soleil", half: "Mi-ombre", shade: "Ombre" } : { sun: "Sun", half: "Part shade", shade: "Shade" };
+    return m[s] || s;
+  }
+  function monthLabel(m) { return MONTHS[lang][((m % 12) + 12) % 12]; }
+  function monthWindow(arr) {
+    if (!arr || !arr.length) return "";
+    var a = MONTHS[lang];
+    var set = {}; arr.forEach(function (m) { set[m] = true; });
+    var runs = [], i = 0;
+    while (i < 12) {
+      if (!set[i]) { i++; continue; }
+      var start = i;
+      while (i < start + 11 && set[(i + 1) % 12]) i++;
+      runs.push([start, i % 12]);
+      i++;
+    }
+    return runs.map(function (r) { return a[r[0]] + (r[0] !== r[1] ? "–" + a[r[1]] : ""); }).join(", ");
+  }
+  function vqSurf(v) { return Math.max(v.volume, 5) / 200; } // m² estimate (39 L ≈ Ø 50 cm)
+  function vqQty(p, v) {
+    return p.type === "bulb"
+      ? Math.max(1, Math.round(vqSurf(v) * p.bulbsPerM2))
+      : Math.max(1, Math.floor(v.volume / p.lpp));
+  }
+  function vqDensityStr(p) {
+    return p.type === "bulb"
+      ? "~" + p.bulbsPerM2 + "/m²"
+      : (lang === "fr" ? "1 tous les " + p.lpp + " L" : "1 every " + p.lpp + " L");
+  }
+  function tlHead() {
+    var h = '<div class="tl-head">';
+    for (var m = 0; m < 12; m++) h += "<span>" + esc(monthLabel(m).charAt(0)) + "</span>";
+    return h + "</div>";
+  }
+  function tlRow(months, color, title) {
+    var h = '<div class="tl-row" title="' + esc(title) + '">';
+    for (var m = 0; m < 12; m++) {
+      var on = months.indexOf(m) > -1;
+      h += "<span" + (on ? ' style="background:' + color + '"' : "") + "></span>";
+    }
+    return h + "</div>";
+  }
+  function vqCoverage(v) {
+    var cov = [];
+    for (var m = 0; m < 12; m++) cov.push(false);
+    v.entries.forEach(function (e) {
+      vp(e.pid).bloom.forEach(function (m) { cov[m] = true; });
+    });
+    return cov;
+  }
+  function tlCoverage(cov) {
+    var h = '<div class="tl-row cov" title="' + esc(T.vqCoverage) + '">';
+    for (var m = 0; m < 12; m++) h += '<span class="' + (cov[m] ? "" : "gap") + '"></span>';
+    return h + "</div>";
+  }
+  function vqTasks(v, m) {
+    var out = { removes: [], plants: [], bloomNow: [], fullReset: false };
+    v.entries.forEach(function (e) {
+      var p = vp(e.pid);
+      if (p.bloom.indexOf(m) > -1) out.bloomNow.push({ p: p, e: e });
+      if (p.remove && p.remove.indexOf(m) > -1) out.removes.push({ p: p, e: e });
+    });
+    if (v.mode === "full" && (m === 3 || m === 9)) {
+      out.fullReset = true;
+      v.entries.forEach(function (e) {
+        var p = vp(e.pid);
+        if (p.role === "socle" && !(p.remove && p.remove.indexOf(m) > -1)) out.removes.push({ p: p, e: e, reset: true });
+      });
+    }
+    VASE_PLANTS.forEach(function (p) {
+      if (p.plant.indexOf(m) < 0) return;
+      if (p.sun.indexOf(v.sun) < 0) return;
+      var already = v.entries.some(function (e) { return e.pid === p.id; });
+      if (already) return;
+      out.plants.push(p);
+    });
+    out.plants.sort(function (a, b) {
+      var rk = function (p) { return p.role === "socle" ? 0 : p.type === "bulb" ? 1 : 2; };
+      return rk(a) - rk(b);
+    });
+    return out;
+  }
+  function vqGapLine(v, m, t) {
+    if (!v.entries.length) return "";
+    var cov = vqCoverage(v);
+    var sug = {};
+    t.plants.forEach(function (p) { p.bloom.forEach(function (bm) { sug[bm] = true; }); });
+    var gaps = [];
+    for (var k = 1; k <= 5; k++) {
+      var gm = (m + k) % 12;
+      if (!cov[gm]) gaps.push(gm);
+    }
+    if (!gaps.length) return "";
+    var uncovered = gaps.filter(function (gm) { return !sug[gm]; });
+    var h = '<div class="banner grey" style="margin:8px 0 4px">' + T.vqGapPre + " " +
+      gaps.map(function (gm) { return monthLabel(gm); }).join(", ") + " — ";
+    if (!uncovered.length) {
+      h += T.vqGapOk;
+    } else {
+      var seen = {};
+      var fixes = [];
+      uncovered.forEach(function (gm) {
+        for (var i = 0; i < VASE_PLANTS.length; i++) {
+          var p = VASE_PLANTS[i];
+          if (p.bloom.indexOf(gm) < 0 || p.sun.indexOf(v.sun) < 0 || seen[p.id]) continue;
+          if (!p.plant.some(function (pm) { var d = (pm - m + 12) % 12; return d <= k5max(gm, m); })) continue;
+          seen[p.id] = true;
+          fixes.push(p);
+          break;
+        }
+      });
+      h += T.vqGapWarn + " " + fixes.map(function (p) { return esc(vpName(p)) + " (" + monthWindow(p.plant) + ")"; }).join(", ") + ".";
+    }
+    return h + "</div>";
+  }
+  function k5max(gm, m) { return (gm - m + 12) % 12; }
+  function renderVasques() {
+    var m = currentMonth();
+    var h = '<div class="banner wait" style="margin-bottom:12px">' + T.vqIntro + "</div>";
+
+    h += '<div class="card"><div class="addform">' +
+      '<span class="label" style="font-size:0.85rem">' + T.vqNew + "</span>" +
+      '<input type="text" id="vq-name" placeholder="' + T.vqNamePh + '" style="width:150px" />' +
+      '<input type="number" id="vq-volume" min="5" max="500" value="39" style="width:64px" title="Litres" />' +
+      '<span class="small">' + T.vqVolume + "</span>" +
+      '<select id="vq-sun">' +
+        '<option value="sun">' + T.vqSunS + "</option>" +
+        '<option value="half">' + T.vqSunH + "</option>" +
+        '<option value="shade">' + T.vqSunSh + "</option>" +
+      "</select>" +
+      '<select id="vq-mode" title="' + esc(T.vqModeHint) + '">' +
+        '<option value="socle">' + T.vqModeSocle + "</option>" +
+        '<option value="full">' + T.vqModeFull + "</option>" +
+      "</select>" +
+      '<button class="btn mini" data-action="vq-new">' + T.vqAdd + "</button></div></div>";
+
+    if (!vasques.length) h += '<div class="card small">' + T.vqEmpty + "</div>";
+
+    vasques.forEach(function (v) {
+      var t = vqTasks(v, m);
+      h += '<div class="card">' +
+        '<div class="row between"><div><div class="name">' + esc(v.name) + "</div>" +
+        '<span class="badge" style="margin-top:4px">' + v.volume + " L · " + vqSunLabel(v.sun) + " · " + (v.mode === "full" ? T.vqModeFull : T.vqModeSocle) + "</span></div>" +
+        '<button class="x" data-action="vq-del" data-vid="' + v.id + '" title="' + T.vqDelete + '">×</button></div>';
+
+      h += '<div class="tl">' + tlHead();
+      v.entries.forEach(function (e) {
+        var p = vp(e.pid);
+        var col = p.role === "socle" ? "#0e7490" : p.type === "bulb" ? "#a16207" : "#8b5cf6";
+        h += tlRow(p.bloom, col, vpName(p) + " ×" + e.qty + " — " + monthWindow(p.bloom));
+      });
+      if (v.entries.length) h += tlCoverage(vqCoverage(v));
+      h += '</div><div class="legend">' +
+        "<span><i class=\"dot\" style=\"background:#0e7490\"></i>" + T.vqLegSocle + "</span>" +
+        "<span><i class=\"dot\" style=\"background:#8b5cf6\"></i>" + T.vqLegCov + "</span>" +
+        "<span><i class=\"dot\" style=\"background:#a16207\"></i>" + T.vqLegBulb + "</span>" +
+        "<span><i class=\"dot\" style=\"background:#fbbf24\"></i>" + T.vqLegGap + "</span></div>";
+
+      h += '<div class="foot"><strong>' + T.vqThisMonth + "</strong>";
+      if (t.fullReset) h += '<div class="banner wait" style="margin:8px 0 2px">' + T.vqFullReset + "</div>";
+      t.bloomNow.forEach(function (b) {
+        h += '<div class="small" style="margin:6px 0 0">' + T.vqBloomNow + " " +
+          '<span class="badge dark">' + esc(vpName(b.p)) + " ×" + b.e.qty + "</span></div>";
+      });
+      t.removes.forEach(function (r) {
+        h += '<div class="banner due" style="margin:8px 0 4px">' + esc(vpName(r.p)) + " ×" + r.e.qty + " — " +
+          esc(r.reset ? T.vqResetSocle : (lang === "fr" ? r.p.rmFr : r.p.rmEn)) +
+          ' <button class="btn mini outline" data-action="vq-remove" data-vid="' + v.id + '" data-pid="' + r.p.id + '" style="margin-left:6px">' + T.vqRemoveBtn + "</button></div>";
+      });
+      if (t.plants.length) {
+        h += '<div class="small" style="margin:8px 0 2px">' + T.vqPlantNow + "</div>" + '<div class="chips">';
+        t.plants.forEach(function (p) {
+          h += '<span class="badge" style="padding:4px 10px">' + esc(vpName(p)) + " ×" + vqQty(p, v) + " " +
+            (p.type === "bulb" ? T.vqBulbs : T.vqPlantsW) +
+            ' <button class="x" data-action="vq-add" data-vid="' + v.id + '" data-pid="' + p.id + '" title="' + T.vqAdd + '">+</button></span>';
+        });
+        h += "</div>" + '<div class="small" style="color:var(--muted);margin-top:4px">' + T.vqUnderlayer + "</div>";
+      }
+      h += vqGapLine(v, m, t);
+      if (!t.removes.length && !t.plants.length && !t.bloomNow.length && !t.fullReset && !vqGapLine(v, m, t)) {
+        h += '<div class="banner pause" style="margin:8px 0">' + T.vqNothing + "</div>";
+      }
+      h += "</div>";
+
+      h += '<div class="foot"><strong>' + T.vqContents + "</strong>";
+      if (!v.entries.length) h += ' <span class="small">' + T.vqEmptyContents + "</span>";
+      else {
+        h += '<div class="chips" style="margin:6px 0">';
+        v.entries.forEach(function (e) {
+          var p = vp(e.pid);
+          h += '<span class="badge ghost" title="' + esc(lang === "fr" ? p.noteFr : p.noteEn) + '">' +
+            esc(vpName(p)) + " ×" + e.qty +
+            ' <button class="x" data-action="vq-remove" data-vid="' + v.id + '" data-pid="' + p.id + '">×</button></span>';
+        });
+        h += "</div>";
+      }
+      h += '<div class="addform" style="margin-top:8px">' +
+        '<select id="vq-p-' + v.id + '">' +
+        VASE_PLANTS.map(function (p) {
+          return '<option value="' + p.id + '">' + esc(vpName(p)) + " — " + vqDensityStr(p) + "</option>";
+        }).join("") +
+        "</select>" +
+        '<input type="number" id="vq-q-' + v.id + '" min="1" value="1" style="width:60px" />' +
+        '<button class="btn mini" data-action="vq-addmanual" data-vid="' + v.id + '">' + T.vqAdd + "</button></div>";
+      h += "</div></div>";
+    });
+
+    h += '<div class="card"><strong>' + T.vqCalendar + '</strong>' +
+      '<div class="small" style="margin:4px 0">' + T.vqCalendarNote + "</div>" +
+      '<table><tr>';
+    T.vqCalCols.forEach(function (c) { h += "<th>" + esc(c) + "</th>"; });
+    h += "</tr>";
+    VASE_PLANTS.slice().sort(function (a, b) {
+      var sk = function (p) {
+        if (p.role === "socle") return 0;
+        return (p.plant.indexOf(8) > -1 || p.plant.indexOf(9) > -1 || p.plant.indexOf(10) > -1 || p.plant.indexOf(11) > -1) ? 1 : 2;
+      };
+      return sk(a) - sk(b);
+    }).forEach(function (p) {
+      h += "<tr><td><strong>" + esc(vpName(p)) + '</strong> <span class="badge ghost" style="font-size:0.6rem">' + T.vqRoles[p.role] + "</span></td>" +
+        "<td>" + monthWindow(p.plant) + "</td><td>" + monthWindow(p.bloom) + "</td>" +
+        "<td>" + vqDensityStr(p) + "</td><td>" + p.sun.map(vqSunLabel).join(", ") + "</td></tr>";
+    });
+    h += "</table></div>";
+
+    view.innerHTML = h;
+  }
+
   function renderChrome() {
     document.documentElement.setAttribute("lang", lang);
     var sub = document.getElementById("subtitle");
@@ -673,6 +1127,7 @@
     }
     document.getElementById("nav-plantes").textContent = T.nav.plantes;
     document.getElementById("nav-melanges").textContent = T.nav.melanges;
+    document.getElementById("nav-vasques").textContent = T.nav.vasques;
     document.getElementById("nav-stock").textContent = T.nav.stock;
   }
 
@@ -683,6 +1138,7 @@
     });
     if (tab === "plantes") renderPlants();
     else if (tab === "melanges") renderMixes();
+    else if (tab === "vasques") renderVasques();
     else renderStock();
   }
 
@@ -731,6 +1187,54 @@
       state.plants.push({ id: uid(), name: name, groupId: gsel.value, sinceFert: 0 });
       if (nameIn) nameIn.value = "";
       save(); render();
+    } else if (action === "vq-new") {
+      var vqNm = document.getElementById("vq-name");
+      var vqVol = document.getElementById("vq-volume");
+      var vqSun = document.getElementById("vq-sun");
+      var vqMode = document.getElementById("vq-mode");
+      vasques.push({
+        id: uid(),
+        name: (vqNm && vqNm.value ? vqNm.value : "").trim() || (lang === "fr" ? "Vasque" : "Planter"),
+        volume: Math.max(5, Math.min(500, parseInt(vqVol && vqVol.value, 10) || 39)),
+        sun: vqSun && ["sun", "half", "shade"].indexOf(vqSun.value) > -1 ? vqSun.value : "sun",
+        mode: vqMode && vqMode.value === "full" ? "full" : "socle",
+        entries: []
+      });
+      if (vqNm) vqNm.value = "";
+      saveVasques(); render();
+    } else if (action === "vq-del") {
+      var vqVid = el.getAttribute("data-vid");
+      vasques = vasques.filter(function (x) { return x.id !== vqVid; });
+      saveVasques(); render();
+    } else if (action === "vq-remove") {
+      var vqVid2 = el.getAttribute("data-vid"), vqPid = el.getAttribute("data-pid");
+      vasques.forEach(function (x) {
+        if (x.id === vqVid2) x.entries = x.entries.filter(function (e2) { return e2.pid !== vqPid; });
+      });
+      saveVasques(); render();
+    } else if (action === "vq-add") {
+      var vqVid3 = el.getAttribute("data-vid"), vqPid2 = el.getAttribute("data-pid");
+      vasques.forEach(function (x) {
+        if (x.id !== vqVid3) return;
+        var q = vqQty(vp(vqPid2), x);
+        var ex = null;
+        x.entries.forEach(function (e2) { if (e2.pid === vqPid2) ex = e2; });
+        if (ex) ex.qty += q; else x.entries.push({ pid: vqPid2, qty: q });
+      });
+      saveVasques(); render();
+    } else if (action === "vq-addmanual") {
+      var vqVid4 = el.getAttribute("data-vid");
+      var vqPs = document.getElementById("vq-p-" + vqVid4);
+      var vqQs = document.getElementById("vq-q-" + vqVid4);
+      var vqPid3 = vqPs ? vqPs.value : VASE_PLANTS[0].id;
+      var vqN = Math.max(1, parseInt(vqQs && vqQs.value, 10) || 1);
+      vasques.forEach(function (x) {
+        if (x.id !== vqVid4) return;
+        var ex = null;
+        x.entries.forEach(function (e2) { if (e2.pid === vqPid3) ex = e2; });
+        if (ex) ex.qty += vqN; else x.entries.push({ pid: vqPid3, qty: vqN });
+      });
+      saveVasques(); render();
     }
   });
 
