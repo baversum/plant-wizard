@@ -180,14 +180,18 @@
       filters: { all: "All", Indoor: "Indoor", Outdoor: "Outdoor" },
       dueBadge: "Fertilizer due:",
       plantsBadgeSg: "plant", plantsBadgePl: "plants",
-      winterBanner: "Winter fertilizer break: from November to February, water by observation and plain water only — feeding a resting plant does nothing and the salts just pile up in the soil.",
+      winterBanner: "Winter fertilizer break: from November to February, water by observation and plain water only — feeding a resting plant does nothing and the salts just pile up in the soil. Winter growers like hellebores are the exception: their card keeps saying when a light half-dose feed is due.",
       addLabel: "Add:", customName: "Custom name (optional)", addBtn: "Add",
       bannerDue: "Fertilizer with this watering",
       bannerWaitPre: "Plain water — fertilizer in", bannerWaitSg: "watering", bannerWaitPl: "waterings",
       bannerPause: "Plain water — winter fertilizer break (Nov.–Feb.)",
+      bannerWinterDue: "Fertilizer with this watering — half dose (it grows all winter)",
+      footWinter: "Winter grower: light feed while it buds and blooms, by observation.",
+      fertSeasonAll: "(all year — half dose in winter)",
       bannerNever: "No fertilizer, ever",
       waterPlain: "Watered — plain", waterFert: "Watered + fertilizer",
       footPause: "Fertilizer becomes useful again in March.",
+      footJustFed: "Fertilized with the last watering.",
       footSinceSg: "watering since the last fertilizer.", footSincePl: "waterings since the last fertilizer.",
       remove: "Remove",
       fertEveryPre: "Fertilizer every", fertEveryW: "watering", fertEveryPl: "waterings", fertSeason: "(Mar.–Oct.)",
@@ -200,7 +204,7 @@
         "Pots under 15 cm: crush bark and pumice.",
         "Bark: soak overnight before use. Minerals: rinse off the dust.",
         "Rule of thumb: an indoor mix should dry out in 2–3 days.",
-        "Fertilizer only during the growing season (March – October), never on bone-dry soil."
+        "Fertilizer only during the growing season (March – October), never on bone-dry soil. Winter growers like hellebores are the exception: light half-dose while they bud and bloom."
       ],
       ownedMid: "/", ownedEnd: "products owned",
       substTitle: "Substitutions: equivalents & dosages",
@@ -213,14 +217,18 @@
       filters: { all: "Tous", Indoor: "Intérieur", Outdoor: "Extérieur" },
       dueBadge: "Engrais à apporter :",
       plantsBadgeSg: "plante", plantsBadgePl: "plantes",
-      winterBanner: "Pause engrais d'hiver : de novembre à février, on arrose à l'observation et à l'eau claire uniquement — nourrir une plante au repos ne sert à rien et les sels s'accumulent dans le substrat.",
+      winterBanner: "Pause engrais d'hiver : de novembre à février, on arrose à l'observation et à l'eau claire uniquement — nourrir une plante au repos ne sert à rien et les sels s'accumulent dans le substrat. Exception pour les plantes d'hiver comme les hellébores : leur fiche continue d'indiquer l'apport léger à demi-dose.",
       addLabel: "Ajouter :", customName: "Nom perso (optionnel)", addBtn: "Ajouter",
       bannerDue: "Engrais avec cet arrosage",
       bannerWaitPre: "Eau claire — engrais dans", bannerWaitSg: "arrosage", bannerWaitPl: "arrosages",
       bannerPause: "Eau claire — pause engrais d'hiver (nov.–févr.)",
+      bannerWinterDue: "Engrais avec cet arrosage — demi-dose (elle pousse tout l'hiver)",
+      footWinter: "Plante d'hiver : apport léger tant qu'elle boutonne et fleurit, à l'observation.",
+      fertSeasonAll: "(toute l'année — demi-dose l'hiver)",
       bannerNever: "Jamais d'engrais",
       waterPlain: "Arrosé — eau claire", waterFert: "Arrosé + engrais",
       footPause: "L'engrais redevient utile dès mars.",
+      footJustFed: "Engrais apporté au dernier arrosage.",
       footSinceSg: "arrosage depuis le dernier engrais.", footSincePl: "arrosages depuis le dernier engrais.",
       remove: "Supprimer",
       fertEveryPre: "Engrais tous les", fertEveryW: "arrosage", fertEveryPl: "arrosages", fertSeason: "(mars–oct.)",
@@ -233,7 +241,7 @@
         "Pots de moins de 15 cm : concasser écorces et pouzzolane.",
         "Écorces : tremper la veille. Minéraux : rincer la poussière.",
         "Repère : un mélange d'intérieur doit sécher en 2–3 jours.",
-        "Engrais uniquement en saison de croissance (mars–octobre), jamais sur une terre complètement sèche."
+        "Engrais uniquement en saison de croissance (mars–octobre), jamais sur une terre complètement sèche. Exception : les plantes d'hiver comme les hellébores, apport léger à demi-dose tant qu'elles boutonnent et fleurissent."
       ],
       ownedMid: "/", ownedEnd: "produits en stock",
       substTitle: "Substitutions : équivalents & dosages",
@@ -268,7 +276,7 @@
       cacti: "Grasses & cactus", epiphytes: "Épiphytes forestiers", "fine-roots": "Racines fines",
       bulbs: "Bulbeuses & tubercules", ferns: "Fougères", orchids: "Orchidées",
       mediterranean: "Méditerranéens (en pot)", "potted-flowers": "Fleurs en pot et jardinières",
-      rockery: "Grasses de rocaille", "acid-lovers": "Acidophiles"
+      rockery: "Grasses de rocaille", "acid-lovers": "Acidophiles", hellebores: "Hellébores (en pot)"
     },
     notes: {
       tropicals: "Laisser sécher le premier centimètre entre deux arrosages.",
@@ -281,7 +289,8 @@
       ferns: "Toujours frais, jamais détrempé.",
       orchids: "Trempot 10 minutes puis égoutter. Engrais équilibré à demi-dose sur racines humides.",
       mediterranean: "Une fois installés, arrosage sobre. Protéger les pots du gel — les racines en pot souffrent en premier. Purins de mars à octobre.",
-      "potted-flowers": "Pétunias et surfinias : engrais fleuri chaque semaine en été — les plus gourmandes du jardin. Vider la soucoupe. Hellébores : pot profond, jamais à sec en été, couper les vieilles feuilles à l'apparition des boutons — un surfaçage de compost à l'automne couvre la floraison hivernale.",
+      "potted-flowers": "Pétunias et surfinias : engrais fleuri chaque semaine en été — les plus gourmandes du jardin. Vider la soucoupe.",
+      hellebores: "Plante d'hiver : elle boutonne et fleurit de novembre à mars, donc elle garde un apport liquide léger (demi-dose) pendant que tout le reste se repose. Pot profond, mélange riche en humus, jamais à sec ; couper les vieilles feuilles à l'apparition des boutons.",
       rockery: "Arroser seulement à la plantation et lors des canicules. Paillage minéral en surface, zéro engrais.",
       "acid-lovers": "pH 4,5–5,5 : jamais de calcaire. Eau de pluie uniquement. Fer chélaté si les feuilles jaunissent (chlorose)."
     }
@@ -324,8 +333,8 @@
     "Ericaceous soil": "#556B2F", "Garden soil": "#7A5C3E"
   };
 
-  function G(id, name, zone, mix, fertEvery, note, plants) {
-    return { id: id, name: name, zone: zone, mix: mix, fertEvery: fertEvery, note: note, plants: plants };
+  function G(id, name, zone, mix, fertEvery, note, plants, winterFeed) {
+    return { id: id, name: name, zone: zone, mix: mix, fertEvery: fertEvery, note: note, plants: plants, winterFeed: !!winterFeed };
   }
   function M(label, pct) { return { label: label, pct: pct }; }
 
@@ -372,8 +381,12 @@
       ["Strawberry tree", "Olive", "Lavender", "Rosemary", "Pomegranate"]),
     G("potted-flowers", "Flowering container plants", "Outdoor",
       [M("Potting soil", 50), M("Garden soil", 25), M("Pumice", 25)], 1,
-      "Petunias and surfinias: flowering fertilizer weekly in summer — the hungriest plants in the garden. Empty the saucer. Hellebores: deep pot, never bone dry in summer, trim the old leaves as buds appear — an autumn top-dressing of compost covers the winter bloom.",
-      ["Geranium", "Surfinia", "Petunia", "Pelargonium", "Hellebore"]),
+      "Petunias and surfinias: flowering fertilizer weekly in summer — the hungriest plants in the garden. Empty the saucer.",
+      ["Geranium", "Surfinia", "Petunia", "Pelargonium"]),
+    G("hellebores", "Hellebores (potted)", "Outdoor",
+      [M("Potting soil", 50), M("Garden soil", 25), M("Pumice", 25)], 2,
+      "Winter grower: it buds and blooms from November to March, so it keeps a light liquid feed (half dose) through the cold months while everything else rests. Deep pot, humus-rich mix, never bone dry; trim the old leaves as buds appear.",
+      ["Hellebore"], true),
     G("rockery", "Rockery succulents", "Outdoor",
       [M("Potting soil", 25), M("Pumice", 75)], null,
       "Water only at planting and in heatwaves. Mineral mulch on top, zero fertilizer.",
@@ -430,6 +443,14 @@
       if (raw) {
         var p = JSON.parse(raw);
         if (Array.isArray(p.plants)) {
+          p.plants.forEach(function (pl) {
+            if (pl && pl.groupId === "potted-flowers" && typeof pl.name === "string") {
+              var n = pl.name.toLowerCase();
+              if (n.indexOf("helleb") > -1 || n.indexOf("helléb") > -1 || n.indexOf("helleborus") > -1) {
+                pl.groupId = "hellebores";
+              }
+            }
+          });
           return { plants: p.plants, owned: Array.isArray(p.owned) ? p.owned : [] };
         }
       }
@@ -458,7 +479,12 @@
   }
   function fertState(p, g) {
     if (g.fertEvery === null) return { kind: "never" };
-    if (!inSeason()) return { kind: "pause" };
+    if (!inSeason()) {
+      if (g.winterFeed) {
+        return p.sinceFert >= g.fertEvery ? { kind: "wdue" } : { kind: "waiting", remaining: g.fertEvery - p.sinceFert };
+      }
+      return { kind: "pause" };
+    }
     if (p.sinceFert >= g.fertEvery) return { kind: "due" };
     return { kind: "waiting", remaining: g.fertEvery - p.sinceFert };
   }
@@ -483,14 +509,15 @@
     var rows = state.plants.map(function (p) {
       var g = grp(p.groupId);
       var fs = fertState(p, g);
-      var rank = fs.kind === "due" ? 0 : fs.kind === "waiting" ? fs.remaining : fs.kind === "pause" ? 500 : 900;
+      var rank = (fs.kind === "due" || fs.kind === "wdue") ? 0 : fs.kind === "waiting" ? fs.remaining : fs.kind === "pause" ? 500 : 900;
       return { p: p, g: g, fs: fs, rank: rank };
     });
     if (filter !== "all") rows = rows.filter(function (r) { return r.g.zone === filter; });
     rows.sort(function (a, b) { return a.rank - b.rank || a.p.name.localeCompare(b.p.name); });
 
     var dueCount = state.plants.filter(function (p) {
-      return fertState(p, grp(p.groupId)).kind === "due";
+      var k = fertState(p, grp(p.groupId)).kind;
+      return k === "due" || k === "wdue";
     }).length;
 
     var h = '<div class="row" style="margin-bottom:10px">' +
@@ -527,6 +554,8 @@
       var banner;
       if (fs.kind === "due") {
         banner = '<div class="banner due">' + T.bannerDue + "</div>";
+      } else if (fs.kind === "wdue") {
+        banner = '<div class="banner due">' + T.bannerWinterDue + "</div>";
       } else if (fs.kind === "waiting") {
         banner = '<div class="banner wait">' + T.bannerWaitPre + " " + fs.remaining + " " +
           (fs.remaining > 1 ? T.bannerWaitPl : T.bannerWaitSg) + "</div>";
@@ -537,7 +566,7 @@
       }
 
       var btns = "";
-      if (fs.kind === "due") {
+      if (fs.kind === "due" || fs.kind === "wdue") {
         btns = '<div class="row">' +
           '<button class="btn mini outline" data-action="water" data-fert="0" data-id="' + p.id + '">' + T.waterPlain + "</button>" +
           '<button class="btn mini" data-action="water" data-fert="1" data-id="' + p.id + '">' + T.waterFert + "</button></div>";
@@ -550,6 +579,10 @@
         foot = '<div class="foot small">' +
           (fs.kind === "pause"
             ? T.footPause
+            : fs.kind === "wdue"
+            ? T.footWinter
+            : p.sinceFert === 0
+            ? T.footJustFed
             : p.sinceFert + " " + (p.sinceFert > 1 ? T.footSincePl : T.footSinceSg)) +
           "</div>";
       }
@@ -578,7 +611,7 @@
         '<div class="small" style="margin:8px 0">' +
         (g.fertEvery === null
           ? T.fertNever
-          : T.fertEveryPre + " " + (g.fertEvery === 1 ? T.fertEveryW : g.fertEvery + " " + T.fertEveryPl) + " " + T.fertSeason) +
+          : T.fertEveryPre + " " + (g.fertEvery === 1 ? T.fertEveryW : g.fertEvery + " " + T.fertEveryPl) + " " + (g.winterFeed ? T.fertSeasonAll : T.fertSeason)) +
         "</div>" +
         (gnote(g) ? '<div class="small" style="color:var(--muted)">' + esc(gnote(g)) + "</div>" : "") +
         '<div class="chips" style="margin-top:8px">';

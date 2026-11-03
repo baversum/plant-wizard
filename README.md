@@ -12,7 +12,7 @@ The app speaks English and French — tap the little flag in the header to switc
 
 Watering calendars don't work. Pots dry at their own pace depending on the season, the weather, and the pot size — and a fixed schedule is a reliable way to drown a plant in October or underwater it in July. Plant Wizard takes the opposite approach: you water when the soil tells you to (dry at 2 cm depth, or a light pot). What the app adds is the answer to the question you're asking yourself at that exact moment: *should this watering carry fertilizer, or would that be pointless — or even harmful?*
 
-Each plant simply remembers how many plain waterings it has had since its last feed, and a winter break is built in (November–February): feeding a resting plant does nothing and the salts just pile up in the soil.
+Each plant simply remembers how many plain waterings it has had since its last feed, and a winter break is built in (November–February): feeding a resting plant does nothing and the salts just pile up in the soil. Winter growers like hellebores are the exception — their card keeps calling for a light half-dose feed.
 
 ## What's inside
 
