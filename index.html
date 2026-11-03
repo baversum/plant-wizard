@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#0f172a" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<title>Plant Wizard 🪴</title>
+<title>Plant Wizard</title>
 <style>
   :root {
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -92,12 +92,12 @@
 </head>
 <body>
 <header>
-  <h1>🪴 Jardin &amp; Substrats</h1>
-  <p>Mélanges &amp; engrais, à l'observation</p>
+  <h1>🪴 Plant Wizard</h1>
+  <p>Soil mixes &amp; fertilizer, by observation</p>
 </header>
 <nav>
-  <button data-tab="plantes" class="active">💧 Mes plantes</button>
-  <button data-tab="melanges">🧱 Mélanges</button>
+  <button data-tab="plantes" class="active">💧 My plants</button>
+  <button data-tab="melanges">🧱 Mixes</button>
   <button data-tab="stock">🛒 Stock</button>
 </nav>
 <main id="view"></main>
@@ -106,11 +106,11 @@
 (function () {
   "use strict";
 
-  // ---------- Données ----------
+  // ---------- Data ----------
   var MIX_COLORS = {
-    "Terreau": "#8B5E3C", "Écorces": "#A16207", "Écorces concassées": "#A16207",
-    "Pouzzolane": "#D2691E", "Coco": "#E3B23C", "Sable": "#D6BD8A",
-    "Compost": "#4E342E", "Terre de bruyère": "#556B2F", "Terre de jardin": "#7A5C3E"
+    "Potting soil": "#8B5E3C", "Bark": "#A16207", "Crushed bark": "#A16207",
+    "Pumice": "#D2691E", "Coco": "#E3B23C", "Sand": "#D6BD8A",
+    "Compost": "#4E342E", "Ericaceous soil": "#556B2F", "Garden soil": "#7A5C3E"
   };
 
   function G(id, name, icon, zone, mix, fertEvery, note, plants) {
@@ -119,105 +119,102 @@
   function M(label, pct) { return { label: label, pct: pct }; }
 
   var GROUPS = [
-    G("tropicales", "Tropicales & aracées", "🌿", "Intérieur",
-      [M("Terreau", 40), M("Écorces", 25), M("Pouzzolane", 20), M("Coco", 15)], 2,
-      "Laisser sécher le premier centimètre entre deux arrosages.",
-      ["Pothos", "Monstera", "Aglaonéma", "Ficus", "ZZ", "Philodendron", "Syngonium"]),
-    G("anthurium", "Anthuriums", "🌺", "Intérieur",
-      [M("Terreau", 30), M("Écorces", 35), M("Coco", 20), M("Pouzzolane", 15)], 2,
-      "Racines épaisses : jamais d'eau stagnante en soucoupe. Mélange le plus aéré. Engrais fleuries pour la floraison.",
+    G("tropicals", "Tropicals & aroids", "🌿", "Indoor",
+      [M("Potting soil", 40), M("Bark", 25), M("Pumice", 20), M("Coco", 15)], 2,
+      "Let the top centimetre dry out between waterings.",
+      ["Pothos", "Monstera", "Aglaonema", "Ficus", "ZZ", "Philodendron", "Syngonium"]),
+    G("anthurium", "Anthuriums", "🌺", "Indoor",
+      [M("Potting soil", 30), M("Bark", 35), M("Coco", 20), M("Pumice", 15)], 2,
+      "Thick roots: never leave water sitting in the saucer. The airiest mix of them all. A flowering fertilizer helps push blooms.",
       ["Anthurium"]),
-    G("semi-grasses", "Semi-grasses", "🌾", "Intérieur",
-      [M("Terreau", 55), M("Pouzzolane", 30), M("Écorces concassées", 15)], 3,
-      "Doit sécher en 2–3 jours. Tiges noircies à la base = trop humide.",
-      ["Tradescantia", "Kalanchoé", "Gasteraloe"]),
-    G("grasses", "Plantes grasses & cactus", "🌵", "Intérieur",
-      [M("Terreau", 35), M("Pouzzolane", 45), M("Sable", 20)], 4,
-      "Séchage total entre deux arrosages. Engrais rare, demi-dose.",
+    G("semi-succulents", "Semi-succulents", "🌾", "Indoor",
+      [M("Potting soil", 55), M("Pumice", 30), M("Crushed bark", 15)], 3,
+      "Should dry out in 2–3 days. Stems turning black at the base means too wet.",
+      ["Tradescantia", "Kalanchoe", "Gasteraloe"]),
+    G("cacti", "Succulents & cacti", "🌵", "Indoor",
+      [M("Potting soil", 35), M("Pumice", 45), M("Sand", 20)], 4,
+      "Let it dry fully between waterings. Fertilize rarely, at half dose.",
       ["Cactus", "Echeveria", "Haworthia", "Crassula"]),
-    G("forestiers", "Épiphytes forestiers", "🎄", "Intérieur",
-      [M("Terreau", 50), M("Écorces", 25), M("Pouzzolane", 25)], 3,
-      "Riche mais très drainant. Jamais complètement sec.",
-      ["Cactus de Noël", "Rhipsalis"]),
-    G("fines", "Racines fines", "🍃", "Intérieur",
-      [M("Terreau", 70), M("Pouzzolane", 20), M("Coco", 10)], 2,
-      "Tout concassé pour les petits pots.",
-      ["Oxalis", "Bégonia", "Peperomia", "Fittonia"]),
-    G("bulbeuses", "Bulbeuses", "🌷", "Intérieur",
-      [M("Terreau", 60), M("Compost", 20), M("Pouzzolane", 20)], 2,
-      "Zantedeschia : ne pas laisser sécher en saison. Amaryllis : engrais fleuries riche en potasse après la floraison pour regonfler le bulbe.",
-      ["Amaryllis", "Zantedeschia", "Cyperus"]),
-    G("fougeres", "Fougères", "🌱", "Intérieur",
-      [M("Terreau", 60), M("Coco", 25), M("Pouzzolane", 15)], 2,
-      "Substrat toujours frais, jamais détrempé.",
-      ["Fougère de Boston", "Pteris"]),
-    G("orchidees", "Orchidées", "🌸", "Intérieur",
-      [M("Écorces", 90), M("Pouzzolane", 10)], 3,
-      "Tremper le pot 10 min puis égoutter. Engrais universel à demi-dose sur racines humides.",
+    G("epiphytes", "Forest epiphytes", "🎄", "Indoor",
+      [M("Potting soil", 50), M("Bark", 25), M("Pumice", 25)], 3,
+      "Rich yet very free-draining. Never bone dry.",
+      ["Christmas cactus", "Rhipsalis"]),
+    G("fine-roots", "Fine-rooted plants", "🍃", "Indoor",
+      [M("Potting soil", 70), M("Pumice", 20), M("Coco", 10)], 2,
+      "Everything crushed, for small pots.",
+      ["Oxalis", "Begonia", "Peperomia", "Fittonia"]),
+    G("bulbs", "Bulbs & tubers", "🌷", "Indoor",
+      [M("Potting soil", 60), M("Compost", 20), M("Pumice", 20)], 2,
+      "Calla lilies never want to dry out in the growing season. Amaryllis: high-potash feed after bloom to refill the bulb.",
+      ["Amaryllis", "Zantedeschia (calla)", "Cyperus"]),
+    G("ferns", "Ferns", "🌱", "Indoor",
+      [M("Potting soil", 60), M("Coco", 25), M("Pumice", 15)], 2,
+      "Keep evenly moist, never soggy.",
+      ["Boston fern", "Pteris"]),
+    G("orchids", "Orchids", "🌸", "Indoor",
+      [M("Bark", 90), M("Pumice", 10)], 3,
+      "Soak the pot for 10 minutes, then drain. Balanced fertilizer at half dose on damp roots.",
       ["Phalaenopsis"]),
-    G("medit", "Méditerranéennes (pot)", "☀️", "Extérieur",
-      [M("Terreau", 40), M("Pouzzolane", 30), M("Sable", 20), M("Compost", 10)], 4,
-      "Arrosage très espacé une fois installées. Pots protégés du gel (racines exposées). Purins de mars à octobre.",
-      ["Arbousier", "Olivier", "Lavande", "Romarin", "Grenadier"]),
-    G("potees", "Potées fleuries", "🪴", "Extérieur",
-      [M("Terreau", 50), M("Terre de jardin", 25), M("Pouzzolane", 25)], 1,
-      "Pétunias/surfinias : engrais fleuries hebdomadaire en été — ce sont les plus gourmandes. Soucoupe vidée.",
-      ["Géranium", "Surfinia", "Pétunia", "Pélargonium"]),
-    G("rocaille", "Rocaille & plantes grasses", "🪨", "Extérieur",
-      [M("Terreau", 25), M("Pouzzolane", 75)], null,
-      "Arrosage seulement à la plantation et en canicule. Paillage minéral en surface, zéro engrais.",
+    G("mediterranean", "Mediterranean (potted)", "☀️", "Outdoor",
+      [M("Potting soil", 40), M("Pumice", 30), M("Sand", 20), M("Compost", 10)], 4,
+      "Once established, water sparingly. Protect pots from frost — roots in pots get the cold first. Fermented teas from March to October.",
+      ["Strawberry tree", "Olive", "Lavender", "Rosemary", "Pomegranate"]),
+    G("potted-flowers", "Flowering container plants", "🪴", "Outdoor",
+      [M("Potting soil", 50), M("Garden soil", 25), M("Pumice", 25)], 1,
+      "Petunias and surfinias: flowering fertilizer weekly in summer — the hungriest plants in the garden. Empty the saucer.",
+      ["Geranium", "Surfinia", "Petunia", "Pelargonium"]),
+    G("rockery", "Rockery succulents", "🪨", "Outdoor",
+      [M("Potting soil", 25), M("Pumice", 75)], null,
+      "Water only at planting and in heatwaves. Mineral mulch on top, zero fertilizer.",
       ["Sedum", "Sempervivum", "Delosperma"]),
-    G("acidophiles", "Acidophiles", "🫐", "Extérieur",
-      [M("Terre de bruyère", 60), M("Écorces concassées", 20), M("Pouzzolane", 20)], 3,
-      "pH 4,5–5,5 : zéro calcaire. Eau de pluie uniquement. Fer chélaté en cas de feuillage jauni (chlorose).",
-      ["Myrtillier", "Camélia", "Hortensia", "Azalée"]),
-    G("terre", "Pleine terre", "🌳", "Extérieur",
+    G("acid-lovers", "Acid-loving plants", "🫐", "Outdoor",
+      [M("Ericaceous soil", 60), M("Crushed bark", 20), M("Pumice", 20)], 3,
+      "pH 4.5–5.5: no lime, ever. Rainwater only. Chelated iron when the leaves turn yellow (chlorosis).",
+      ["Blueberry", "Camellia", "Hydrangea", "Azalea"]),
+    G("open-ground", "Open ground", "🌳", "Outdoor",
       [M("Compost", 100)], null,
-      "Compost mûre à la plantation, rien d'autre. Hellébore : aime le calcaire, engrais granulaire à l'automne si en pot.",
-      ["Hellébore", "Murier", "Arbuste", "Vivace"])
+      "Mature compost at planting, nothing else. Hellebores like chalky, deep soil; if potted, a handful of slow-release granules each autumn.",
+      ["Hellebore", "Mulberry", "Shrub", "Perennial"])
   ];
 
   var STOCK = [
-    { cat: "🧱 Substrats", items: [
-      { id: "terreau", label: "Terreau universel de qualité", note: "Base de tous les mélanges" },
-      { id: "ecorces", label: "Écorces de pin 10/25 mm", note: "Tremper une nuit avant usage ; concasser pour petits pots" },
-      { id: "coco", label: "Fibre de coco (briques)", note: "Réhydrater avant mélange" },
-      { id: "pouzzolane", label: "Pouzzolane 8/16 mm", note: "Minéral unique — concasser au maillet pour petits pots" },
-      { id: "bruyere", label: "Terre de bruyère", note: "Acidophiles uniquement (myrtillier, hortensia…)" },
-      { id: "compost", label: "Compost mûre", note: "Pleine terre + bulbeuses" }
+    { cat: "🧱 Substrates", items: [
+      { id: "potting-soil", label: "Quality all-purpose potting soil", note: "The base of every mix" },
+      { id: "bark", label: "Pine bark 10/25 mm", note: "Soak overnight before use; crush for small pots" },
+      { id: "coco", label: "Coco coir (bricks)", note: "Rehydrate before mixing" },
+      { id: "pumice", label: "Pumice 8/16 mm", note: "The one mineral that does it all — hammer-crush for small pots" },
+      { id: "ericaceous", label: "Ericaceous potting soil", note: "Acid-lovers only (blueberry, camellia, hydrangea…)" },
+      { id: "compost", label: "Mature compost", note: "Open ground + bulbs" }
     ]},
-    { cat: "🧪 Engrais (pile de 3)", items: [
-      { id: "eng-purins", label: "Cocktail de purins ortie + prêle + consoude (5 L → 100 L)", note: "La routine, partout (intérieur compris) : azote + potasse + silice. Dilué à 5 %, toutes les 2–3 semaines, mars–oct." },
-      { id: "eng-fleuries", label: "Engrais liquide plantes fleuries (Algoflash 1 L ou équivalent)", note: "Florifères : anthurium, zantedeschia, bégonia, oxalis, amaryllis après floraison ; pétunias/surfinias : hebdomadaire en été" },
-      { id: "eng-fer", label: "Fer chélaté (type Séquestrine) ou engrais spécial bruyère", note: "Acidophiles (myrtillier) en cas de chlorose" }
+    { cat: "🧪 Fertilizers (a stack of 3)", items: [
+      { id: "fermented-teas", label: "Fermented nettle + horsetail + comfrey blend (5 L → 100 L)", note: "The everyday feed, indoors and out: nitrogen + potash + silica. Diluted to 5 %, every 2–3 weeks, March to October" },
+      { id: "bloom-feed", label: "Liquid flowering fertilizer, high P-K (Algoflash 1 L or similar)", note: "Bloomers: anthurium, calla, begonia, oxalis, amaryllis after bloom; petunias and surfinias weekly in summer" },
+      { id: "chelated-iron", label: "Chelated iron (Sequestrine-type) or ericaceous fertilizer", note: "For acid-lovers (blueberry) when leaves turn yellow" }
     ]},
-    { cat: "🪵 Paillage & matériel", items: [
-      { id: "paill-ecorces", label: "Écorces de pin (paillage de surface)", note: "Arbousiers, méditerranéennes en pot" },
-      { id: "paill-pouzz", label: "Pouzzolane (paillage minéral)", note: "Rocaille, surface des pots" },
-      { id: "pots", label: "Pots percés + soucoupes", note: "Vider la soucoupe après chaque arrosage" }
+    { cat: "🪵 Mulch & supplies", items: [
+      { id: "bark-mulch", label: "Pine bark (surface mulch)", note: "Strawberry trees, Mediterranean pots" },
+      { id: "pumice-mulch", label: "Pumice (mineral mulch)", note: "Rockery, pot surfaces" },
+      { id: "pots", label: "Drilled pots + saucers", note: "Empty the saucer after every watering" }
     ]}
   ];
 
   var SUBST = [
-    ["Pouzzolane", "Perlite", "Identique", "Plus légère, flotte : OK intérieur, éviter en extérieur"],
-    ["Pouzzolane", "Billes d'argile concassées", "Identique", "Rincer la poussière de concassage"],
-    ["Pouzzolane", "Billes d'argile entières 8/16", "Identique (grands pots)", "Aération moindre : +5 % de part si le mélange reste lourd"],
-    ["Pouzzolane", "Sable de filtration (0,4–0,8 mm)", "÷ 2 — ex. 30 % → 15 %", "Le sable densifie au lieu d'aérer. Max 20 % du mélange, compenser au terreau"],
-    ["Pouzzolane", "Gravier béton 4/8 (Bricomarché)", "Identique", "Souvent calcaire : interdit pour acidophiles"],
-    ["Écorces", "Pouzzolane concassée", "Identique", "Mélange un peu plus sec : arroser un peu plus souvent"],
-    ["Coco", "Tourbe blonde", "Identique", "Tourbe à réhydrater également"]
+    ["Pumice", "Perlite", "Same volume", "Lighter and floats: fine indoors, avoid outdoors"],
+    ["Pumice", "Crushed clay pebbles", "Same volume", "Rinse off the crushing dust"],
+    ["Pumice", "Whole clay pebbles 8/16", "Same (large pots)", "Less aeration: add 5 % more if the mix stays dense"],
+    ["Pumice", "Filter sand (0.4–0.8 mm)", "÷ 2 — e.g. 30 % → 15 %", "Sand densifies instead of aerating. Keep it under 20 % of the mix and top up with potting soil"],
+    ["Pumice", "Concrete gravel 4/8", "Same volume", "Often limestone (alkaline): never for acid-lovers"],
+    ["Bark", "Crushed pumice", "Same volume", "A slightly drier mix: water a little more often"],
+    ["Coco", "Blonde peat", "Same volume", "Peat needs rehydrating too"]
   ];
 
-  // ---------- État ----------
-  var LS_KEY = "jardin-substrats-html-v1";
+  // ---------- State ----------
+  var LS_KEY = "plant-wizard-v1";
   var SEED = [
-    ["Pothos", "tropicales"], ["Monstera", "tropicales"], ["Aglaonéma", "tropicales"],
-    ["Ficus", "tropicales"], ["ZZ", "tropicales"], ["Anthurium", "anthurium"],
-    ["Tradescantia", "semi-grasses"], ["Kalanchoé", "semi-grasses"],
-    ["Cactus de Noël", "forestiers"], ["Oxalis", "fines"], ["Bégonia", "fines"],
-    ["Amaryllis", "bulbeuses"], ["Zantedeschia", "bulbeuses"],
-    ["Arbousier 1", "medit"], ["Arbousier 2", "medit"],
-    ["Myrtillier", "acidophiles"], ["Géranium", "potees"]
+    ["Pothos", "tropicals"], ["Monstera", "tropicals"], ["Anthurium", "anthurium"],
+    ["Tradescantia", "semi-succulents"], ["Christmas cactus", "epiphytes"],
+    ["Amaryllis", "bulbs"], ["Strawberry tree", "mediterranean"],
+    ["Blueberry", "acid-lovers"], ["Geranium", "potted-flowers"]
   ];
 
   function seedPlants() {
@@ -235,11 +232,11 @@
           return { plants: p.plants, owned: Array.isArray(p.owned) ? p.owned : [] };
         }
       }
-    } catch (e) { /* stockage indisponible */ }
+    } catch (e) { /* storage unavailable */ }
     return { plants: seedPlants(), owned: [] };
   }
   function save() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) { /* mémoire uniquement */ }
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) { /* in-memory only */ }
   }
 
   var state = loadState();
@@ -247,7 +244,7 @@
   var filter = "all";
   var addGroup = GROUPS[0].id;
 
-  // ---------- Utilitaires ----------
+  // ---------- Helpers ----------
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -278,7 +275,7 @@
     return h + "</div>";
   }
 
-  // ---------- Rendu ----------
+  // ---------- Rendering ----------
   var view = document.getElementById("view");
 
   function renderPlants() {
@@ -296,69 +293,69 @@
     }).length;
 
     var h = '<div class="row" style="margin-bottom:10px">' +
-      '<span class="badge dark">🧪 Engrais conseillé : ' + dueCount + "</span>" +
-      '<span class="badge ghost">' + state.plants.length + " plante(s)</span>" +
+      '<span class="badge dark">🧪 Fertilizer due: ' + dueCount + "</span>" +
+      '<span class="badge ghost">' + state.plants.length + " plant" + (state.plants.length > 1 ? "s" : "") + "</span>" +
       '<span class="filters" style="margin-left:auto">' +
-      '<button data-filter="all" class="' + (filter === "all" ? "active" : "") + '">Toutes</button>' +
-      '<button data-filter="Intérieur" class="' + (filter === "Intérieur" ? "active" : "") + '">Intérieur</button>' +
-      '<button data-filter="Extérieur" class="' + (filter === "Extérieur" ? "active" : "") + '">Extérieur</button>' +
+      '<button data-filter="all" class="' + (filter === "all" ? "active" : "") + '">All</button>' +
+      '<button data-filter="Indoor" class="' + (filter === "Indoor" ? "active" : "") + '">Indoor</button>' +
+      '<button data-filter="Outdoor" class="' + (filter === "Outdoor" ? "active" : "") + '">Outdoor</button>' +
       "</span></div>";
 
     if (!inSeason()) {
-      h += '<div class="banner sky" style="margin-bottom:12px">❄️ Pause engrais d\'hiver : de novembre à février, arrosez à l\'observation, à l\'eau seule — l\'engrais ne servirait à rien et s\'accumulerait dans le substrat.</div>';
+      h += '<div class="banner sky" style="margin-bottom:12px">❄️ Winter fertilizer break: from November to February, water by observation and plain water only — feeding a resting plant does nothing and the salts just pile up in the soil.</div>';
     }
 
-    // Formulaire d'ajout
+    // Add form
     var g0 = grp(addGroup);
     h += '<div class="card"><div class="addform">' +
-      '<span class="label" style="font-size:0.85rem">Ajouter :</span>' +
+      '<span class="label" style="font-size:0.85rem">Add:</span>' +
       '<select id="f-group">';
     GROUPS.forEach(function (g) {
       h += '<option value="' + g.id + '"' + (g.id === addGroup ? " selected" : "") + ">" + g.icon + " " + esc(g.name) + "</option>";
     });
     h += '</select><select id="f-plant">';
-    g0.plants.forEach(function (pn, i) {
+    g0.plants.forEach(function (pn) {
       h += '<option value="' + esc(pn) + '">' + esc(pn) + "</option>";
     });
-    h += '</select><input type="text" id="f-name" placeholder="Nom libre (optionnel)" style="width:170px" />' +
-      '<button class="btn mini" data-action="add">Ajouter</button></div></div>';
+    h += '</select><input type="text" id="f-name" placeholder="Custom name (optional)" style="width:170px" />' +
+      '<button class="btn mini" data-action="add">Add</button></div></div>';
 
     h += '<div class="grid">';
     rows.forEach(function (r) {
       var p = r.p, g = r.g, fs = r.fs;
       var banner;
       if (fs.kind === "due") {
-        banner = '<div class="banner amber">🧪 Engrais conseillé à cet arrosage</div>';
+        banner = '<div class="banner amber">🧪 Fertilizer with this watering</div>';
       } else if (fs.kind === "waiting") {
-        banner = '<div class="banner slate">💧 Eau seule — engrais dans ' + fs.remaining + " arrosage" + (fs.remaining > 1 ? "s" : "") + "</div>";
+        banner = '<div class="banner slate">💧 Plain water — fertilizer in ' + fs.remaining + " watering" + (fs.remaining > 1 ? "s" : "") + "</div>";
       } else if (fs.kind === "pause") {
-        banner = '<div class="banner sky">❄️ Eau seule — pause engrais d\'hiver (nov.–févr.)</div>';
+        banner = '<div class="banner sky">❄️ Plain water — winter fertilizer break (Nov.–Feb.)</div>';
       } else {
-        banner = '<div class="banner grey">🪨 Aucun engrais, jamais</div>';
+        banner = '<div class="banner grey">🪨 No fertilizer, ever</div>';
       }
 
       var btns = "";
       if (fs.kind === "due") {
         btns = '<div class="row">' +
-          '<button class="btn mini outline" data-action="water" data-fert="0" data-id="' + p.id + '">Arrosé — eau seule</button>' +
-          '<button class="btn mini" data-action="water" data-fert="1" data-id="' + p.id + '">💧 Arrosé + engrais</button></div>';
+          '<button class="btn mini outline" data-action="water" data-fert="0" data-id="' + p.id + '">Watered — plain</button>' +
+          '<button class="btn mini" data-action="water" data-fert="1" data-id="' + p.id + '">💧 Watered + fertilizer</button></div>';
       } else if (fs.kind === "waiting" || fs.kind === "pause") {
-        btns = '<div class="row"><button class="btn mini" data-action="water" data-fert="0" data-id="' + p.id + '">💧 Arrosé — eau seule</button></div>';
+        btns = '<div class="row"><button class="btn mini" data-action="water" data-fert="0" data-id="' + p.id + '">💧 Watered — plain</button></div>';
       }
 
       var foot = "";
       if (fs.kind !== "never") {
         foot = '<div class="foot small">' +
           (fs.kind === "pause"
-            ? "L'engrais redevient utile à partir de mars."
-            : p.sinceFert + " arrosage(s) depuis le dernier engrais.") +
+            ? "Fertilizer becomes useful again in March."
+            : p.sinceFert + " watering" + (p.sinceFert > 1 ? "s" : "") + " since the last fertilizer.") +
           "</div>";
       }
 
       h += '<div class="card">' +
         '<div class="row between"><div><div class="name">' + esc(p.name) + "</div>" +
         '<span class="badge" style="margin-top:4px">' + g.icon + " " + esc(g.name) + "</span></div>" +
-        '<button class="x" data-action="remove" data-id="' + p.id + '" title="Retirer">✕</button></div>' +
+        '<button class="x" data-action="remove" data-id="' + p.id + '" title="Remove">✕</button></div>' +
         banner + btns + foot + "</div>";
     });
     h += "</div>";
@@ -367,9 +364,9 @@
 
   function renderMixes() {
     var h = '<div class="filters row" style="margin-bottom:10px">' +
-      '<button data-filter="all" class="' + (filter === "all" ? "active" : "") + '">Tous</button>' +
-      '<button data-filter="Intérieur" class="' + (filter === "Intérieur" ? "active" : "") + '">Intérieur</button>' +
-      '<button data-filter="Extérieur" class="' + (filter === "Extérieur" ? "active" : "") + '">Extérieur</button></div><div class="grid">';
+      '<button data-filter="all" class="' + (filter === "all" ? "active" : "") + '">All</button>' +
+      '<button data-filter="Indoor" class="' + (filter === "Indoor" ? "active" : "") + '">Indoor</button>' +
+      '<button data-filter="Outdoor" class="' + (filter === "Outdoor" ? "active" : "") + '">Outdoor</button></div><div class="grid">';
 
     GROUPS.forEach(function (g) {
       if (filter !== "all" && g.zone !== filter) return;
@@ -377,7 +374,9 @@
         '<span class="badge ghost">' + g.zone + "</span></div>" +
         mixBar(g.mix) +
         '<div class="small" style="margin:8px 0">🧪 ' +
-        (g.fertEvery === null ? "Aucun engrais" : "Engrais tous les " + g.fertEvery + " arrosages (mars–oct.)") +
+        (g.fertEvery === null
+          ? "No fertilizer"
+          : "Fertilizer every " + (g.fertEvery === 1 ? "watering" : g.fertEvery + " waterings") + " (Mar.–Oct.)") +
         "</div>" +
         (g.note ? '<div class="small" style="color:#64748b">' + esc(g.note) + "</div>" : "") +
         '<div class="chips" style="margin-top:8px">';
@@ -385,14 +384,14 @@
       h += "</div></div>";
     });
 
-    h += '</div><div class="card"><strong>Règles générales</strong><div class="small" style="margin-top:6px">' +
-      "• Arrosage à l'observation : substrat sec au doigt à 2 cm (ou pot léger).<br>" +
-      "• Tout en mélange homogène : pas de couche de drainage au fond du pot (nappe perchée).<br>" +
-      "• Pot percé + soucoupe vidée après arrosage.<br>" +
-      "• Pots de moins de 15 cm : concasser écorces et pouzzolane.<br>" +
-      "• Écorces : tremper une nuit avant usage. Minéraux : rincer si poussiéreux.<br>" +
-      "• Repère : un mélange intérieur doit sécher en 2–3 jours.<br>" +
-      "• Engrais uniquement en saison de croissance (mars – octobre), jamais sur terreau sec.</div></div>";
+    h += '</div><div class="card"><strong>House rules</strong><div class="small" style="margin-top:6px">' +
+      "• Water by observation: soil dry at 2 cm depth, or a light pot.<br>" +
+      "• One homogeneous mix — no drainage layer at the bottom of the pot (it only raises the perched water table).<br>" +
+      "• Drilled pot, saucer emptied after watering.<br>" +
+      "• Pots under 15 cm: crush bark and pumice.<br>" +
+      "• Bark: soak overnight before use. Minerals: rinse off the dust.<br>" +
+      "• Rule of thumb: an indoor mix should dry out in 2–3 days.<br>" +
+      "• Fertilizer only during the growing season (March – October), never on bone-dry soil.</div></div>";
     view.innerHTML = h;
   }
 
@@ -400,7 +399,7 @@
     var total = 0;
     STOCK.forEach(function (c) { total += c.items.length; });
     var h = '<div class="row" style="margin-bottom:10px"><span class="badge ghost">' +
-      state.owned.length + " / " + total + " produits possédés</span></div>";
+      state.owned.length + " / " + total + " products owned</span></div>";
 
     STOCK.forEach(function (cat) {
       h += '<div class="card"><strong>' + esc(cat.cat) + "</strong>";
@@ -414,12 +413,12 @@
       h += "</div>";
     });
 
-    h += '<div class="card"><strong>Substitutions : équivalences &amp; dosages</strong><table style="margin-top:8px">' +
-      "<tr><th>Remplacer…</th><th>Par…</th><th>Dosage</th><th>Note</th></tr>";
+    h += '<div class="card"><strong>Substitutions: equivalents &amp; dosages</strong><table style="margin-top:8px">' +
+      "<tr><th>Replace…</th><th>With…</th><th>Dosage</th><th>Note</th></tr>";
     SUBST.forEach(function (s) {
       h += "<tr><td>" + esc(s[0]) + "</td><td><strong>" + esc(s[1]) + "</strong></td><td>" + esc(s[2]) + "</td><td>" + esc(s[3]) + "</td></tr>";
     });
-    h += '</table><p class="small" style="margin-top:8px">Principe : les substitutions minérales à granulométrie équivalente se font à volume égal. Seuls le sable fin (÷ 2) et le calibre (à concasser pour petits pots) exigent de revoir le dosage.</p></div>';
+    h += '</table><p class="small" style="margin-top:8px">Rule of thumb: mineral substitutes of equivalent grain size swap at equal volume. Only fine sand (halve the dose) and grain size (crush it for small pots) ever need adjusting.</p></div>';
     view.innerHTML = h;
   }
 
@@ -432,7 +431,7 @@
     else renderStock();
   }
 
-  // ---------- Événements ----------
+  // ---------- Events ----------
   document.querySelectorAll("nav button").forEach(function (b) {
     b.addEventListener("click", function () {
       tab = b.getAttribute("data-tab");
