@@ -330,7 +330,7 @@
     "Blueberry": "Myrtille", "Geranium": "Géranium", "Petunia": "Pétunia", "Hellebore": "Hellébore",
     "Lavender": "Lavande", "Rosemary": "Romarin", "Olive": "Olivier", "Pomegranate": "Grenadier",
     "Hydrangea": "Hortensia", "Azalea": "Azalée", "Camellia": "Camélia", "Boston fern": "Fougère de Boston",
-    "Kalanchoe": "Kalanchoé", "Crassula": "Crassule", "Begonia": "Bégonia"
+    "Kalanchoe": "Kalanchoé", "Crassula": "Crassule", "Begonia": "Bégonia", "African violet": "Saintpaulia"
   };
   function plantName(n) { return lang === "fr" ? (PLANT_FR[n] || n) : n; }
 
@@ -348,7 +348,7 @@
       "semi-succulents": "Doit sécher en 2–3 jours. Tige qui noircit à la base = trop d'eau. Le kalanchoé fleurit en hiver grâce aux jours courts — pas besoin d'engrais pendant sa floraison.",
       cacti: "Laisser sécher complètement entre deux arrosages. Engrais rare, à demi-dose, du printemps au début de l'automne pour que la croissance durcisse avant l'hiver.",
       epiphytes: "Riche mais très drainant. Jamais complètement sec.",
-      "fine-roots": "Tout concassé, pour les petits pots. Oxalis : les variétés à feuillage pourpre poussent en automne-hiver et dorment en été — suivre les feuilles, apport léger tant qu'il en a.",
+      "fine-roots": "Tout concassé, pour les petits pots. Oxalis : les variétés à feuillage pourpre poussent en automne-hiver et dorment en été — suivre les feuilles, apport léger tant qu'il en a. Saintpaulia : fleurit presque toute l'année à la lumière — jamais d'eau froide sur le collet ; un engrais fleuri entretient la floraison.",
       bulbs: "Le calla ne doit jamais sécher en saison. Amaryllis : la floraison hivernale vit sur les réserves du bulbe — l'engrais fait une pause pendant celle-ci, puis les apports riches en potasse de mars à septembre rechargent le bulbe. Calla blanc (aethiopica) : pousse automne-printemps ; hybrides colorés : en été — suivre les feuilles. Le mélange reste pauvre, la fertilité vient des engrais liquides.",
       ferns: "Toujours frais, jamais détrempé.",
       orchids: "Trempot 10 minutes puis égoutter. Engrais équilibré à demi-dose sur racines humides.",
@@ -370,7 +370,7 @@
     pumice: ["Pouzzolane 8/16 mm", "Le seul minéral pour tout — concassée au maillet pour les petits pots ; sert aussi de paillage minéral pour les rocailles"],
     ericaceous: ["Terre de bruyère", "Acidophiles uniquement (myrtille, camélia, hortensia…)"],
     "fermented-teas": ["Purin d'ortie + prêle + consoude (5 L → 100 L)", "L'engrais du quotidien, dedans comme dehors : azote + potasse + silice. Dilué à 5 %, tous les 2–3 arrosages, mars à octobre"],
-    "bloom-feed": ["Engrais liquide fleuri, riche en P-K (Algoflash 1 L ou équivalent)", "Fleurs : anthurium, calla, bégonia, oxalis, amaryllis après floraison ; pétunias et surfinias chaque semaine en été"],
+    "bloom-feed": ["Engrais liquide fleuri, riche en P-K (Algoflash 1 L ou équivalent)", "Fleurs : anthurium, saintpaulia, calla, bégonia, oxalis, amaryllis après floraison ; pétunias et surfinias chaque semaine en été"],
     "chelated-iron": ["Fer chélaté (type Séquestrène) ou engrais bruyère", "Pour les acidophiles (myrtille) quand les feuilles jaunissent"]
   };
   function stockText(id, i, fallback) {
@@ -425,8 +425,8 @@
       ["Christmas cactus", "Rhipsalis"]),
     G("fine-roots", "Fine-rooted plants", "Indoor",
       [M("Potting soil", 70), M("Pumice", 20), M("Coco", 10)], 2,
-      "Everything crushed, for small pots. Oxalis: the purple-leaved kinds grow in autumn-winter and sleep in summer — follow the leaves, light feed while it's in leaf.",
-      ["Oxalis", "Begonia", "Peperomia", "Fittonia"]),
+      "Everything crushed, for small pots. Oxalis: the purple-leaved kinds grow in autumn-winter and sleep in summer — follow the leaves, light feed while it's in leaf. African violet: blooms almost year-round in good light — never cold water on the crown; a high P-K feed keeps the flowers coming.",
+      ["Oxalis", "Begonia", "African violet", "Peperomia", "Fittonia"]),
     G("bulbs", "Bulbs & tubers", "Indoor",
       [M("Potting soil", 80), M("Pumice", 20)], 2,
       "Calla lilies never want to dry out in the growing season. Amaryllis: the winter bloom runs on the bulb's reserves — feeding pauses during it; high-potash feeds from March to September then refill the bulb. White calla (aethiopica) grows autumn-spring, colored hybrids in summer — follow the leaves. The mix stays lean, fertility comes from the liquid feeds.",
@@ -493,7 +493,7 @@
     ]},
     { cat: "Fertilizers — a stack of 3", items: [
       { id: "fermented-teas", label: "Fermented nettle + horsetail + comfrey blend (5 L → 100 L)", note: "The everyday feed, indoors and out: nitrogen + potash + silica. Diluted to 5 %, every 2–3 weeks, March to October" },
-      { id: "bloom-feed", label: "Liquid flowering fertilizer, high P-K (Algoflash 1 L or similar)", note: "Bloomers: anthurium, calla, begonia, oxalis, amaryllis after bloom; petunias and surfinias weekly in summer" },
+      { id: "bloom-feed", label: "Liquid flowering fertilizer, high P-K (Algoflash 1 L or similar)", note: "Bloomers: anthurium, African violet, calla, begonia, oxalis, amaryllis after bloom; petunias and surfinias weekly in summer" },
       { id: "chelated-iron", label: "Chelated iron (Sequestrine-type) or ericaceous fertilizer", note: "For acid-lovers (blueberry) when leaves turn yellow" }
     ]}
   ];
